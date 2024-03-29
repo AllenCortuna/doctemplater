@@ -5,9 +5,18 @@
 * {
   box-sizing: border-box;
 }
+body{
+  color: rgb(76, 76, 76);
+}
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer components {
+  .custom-class {
+    @apply text-zinc-600;
   }
 }
