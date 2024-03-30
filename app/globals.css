@@ -5,8 +5,8 @@
 * {
   box-sizing: border-box;
 }
-body{
-  color: rgb(76, 76, 76);
+body {
+  color: #27272a;
 }
 
 @layer utilities {
@@ -16,7 +16,16 @@ body{
 }
 
 @layer components {
-  .custom-class {
-    @apply text-zinc-600;
+  .custom-input {
+    @apply input-sm input max-w-60 text-zinc-600 input-bordered text-xs p-4 bg-zinc-100 focus:outline-primary focus:border-zinc-100;
+  }
+  .custom-textarea {
+    @apply textarea textarea-bordered resize-none text-xs bg-zinc-100 focus:outline-primary focus:border-primary focus:border-zinc-100;
+  }
+  .primary-text {
+    @apply text-xs text-zinc-500;
+  }
+  .highligth-text {
+    @apply text-xs text-zinc-600 font-semibold;
   }
 }

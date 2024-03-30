@@ -15,12 +15,12 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link href={""}>Create</Link>
-          </li>
-
+        <ul className="menu menu-horizontal px-1 text-xs">
           {/* <li>
+            <Link href={""}>Create</Link>
+          </li> */}
+
+          <li>
             <details>
               <summary>Menu</summary>
               <ul className="p-2 bg-base-100 rounded-t-none w-40">
@@ -32,7 +32,7 @@ export const Navbar = () => {
                 </li>
               </ul>
             </details>
-          </li> */}
+          </li>
         </ul>
       </div>
     </div>
