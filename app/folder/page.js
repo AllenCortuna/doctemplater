@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
 const Folder = () => {
   const [data, setData] = useState({ noaPath: "" });
@@ -21,23 +22,24 @@ const Folder = () => {
     e.preventDefault();
     console.log("Submitted data:", data);
     localStorage.setItem("folderData", JSON.stringify(data));
+    successToast("Folder directories has been updated");
   };
 
   return (
     <div className="flex w-screen p-20 justify-center">
+      <ToastContainer />
       <form
         onSubmit={handleSubmit}
         className="justify-center flex flex-col gap-3 mt-10 w-auto rounded-xl shadow-sm p-8 min-w-[50rem] bg-zinc-50"
       >
         <p className="primary-text">Where to save Award?</p>
-        <textarea
+        <input
           name="noaPath"
           value={data?.noaPath}
           onChange={handleChange}
           // onPaste={handlePaste}
-          className="custom-textarea w-full"
-          rows={2}
-        ></textarea>
+          className="custom-input w-full"
+        ></input>
 
         <button
           type="submit"

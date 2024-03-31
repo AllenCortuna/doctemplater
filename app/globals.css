@@ -17,7 +17,7 @@ body {
 
 @layer components {
   .custom-input {
-    @apply input-sm input max-w-60 text-zinc-600 input-bordered text-xs p-4 bg-zinc-100 focus:outline-primary focus:border-zinc-100;
+    @apply input input-sm text-zinc-600 input-bordered text-xs bg-zinc-100 focus:outline-primary focus:border-zinc-100;
   }
   .custom-textarea {
     @apply textarea textarea-bordered w-auto resize-none text-xs bg-zinc-100 focus:outline-primary focus:border-primary focus:border-zinc-100;

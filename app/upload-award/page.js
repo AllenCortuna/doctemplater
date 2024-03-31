@@ -1,10 +1,11 @@
 "use client";
-import { errorToast } from "@/config/toast";
+import { errorToast, successToast } from "@/config/toast";
 import Image from "next/image";
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import * as XLSX from "xlsx";
 import Dropzone from "react-dropzone";
+import axios from "axios";
 
 const UploadAward = () => {
   const [file, setFile] = useState(null);
@@ -15,7 +16,7 @@ const UploadAward = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (file) {
       const reader = new FileReader();
@@ -25,14 +26,31 @@ const UploadAward = () => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        // Store the data in local storage
+        jsonData.shift();
+        console.log("jsonData", jsonData);
         localStorage.setItem("excelData", JSON.stringify(jsonData));
       };
       reader.readAsBinaryString(file);
     }
-    const excelData = JSON.parse(localStorage.getItem("excelData"));
-    console.log(excelData);
-    console.log(file);
+
+    try {
+      const excelData = JSON.parse(localStorage.getItem("excelData"));
+      const folderData = JSON.parse(localStorage.getItem("folderData"));
+      const response = await axios.post(
+        "http://localhost:3000/api/upload-award",
+        JSON.stringify({ excelData, noaPath: folderData?.noaPath }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response: ", response.data.results);
+      successToast(response.data.results);
+    } catch (error) {
+      console.log("ERROR: ", error);
+      errorToast(error);
+    }
   };
 
   return (
@@ -44,7 +62,10 @@ const UploadAward = () => {
         <ToastContainer />
         <Dropzone
           onDrop={handleFileUpload}
-          accept={{ "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"] }}
+          accept={{
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+              [".xlsx"],
+          }}
           maxFiles={1}
           className="p-4 border-2 border-dashed border-gray-600 rounded-md cursor-pointer"
         >
@@ -57,7 +78,12 @@ const UploadAward = () => {
               <span className="text-gray-400 text-xs min-w-[32rem] text-center m-auto">
                 {file ? (
                   <span className="text-sm flex justify-center text-center gap-2">
-                    <Image src="/ms-excel.png" alt="Example Image" width={40} height={40} />
+                    <Image
+                      src="/ms-excel.png"
+                      alt="Example Image"
+                      width={40}
+                      height={40}
+                    />
                     <p className="my-auto">{file.name}</p>
                   </span>
                 ) : (

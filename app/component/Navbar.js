@@ -25,10 +25,13 @@ export const Navbar = () => {
               <summary className="border hover:border-zinc-700">Menu</summary>
               <ul className="p-2 bg-base-100 rounded-t-none w-40 primary-text text-xs border border-zinc-300">
                 <li>
+                  <Link href={"/"}>Home</Link>
+                </li>
+                <li>
                   <Link href={"/folder"}>Folder</Link>
                 </li>
                 <li>
-                  <Link href={"/"}>Home</Link>
+                  <Link href={"/documentation"}>Documentation</Link>
                 </li>
               </ul>
             </details>
