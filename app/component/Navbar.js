@@ -10,8 +10,8 @@ export const Navbar = () => {
   return (
     <div className="navbar bg-base-100 px-20 bg-zinc-200">
       <div className="flex-1">
-        <Link href={"/"} className={`text-md font-[700]`}>
-          Document System
+        <Link href={"/"} className={`text-md font-[600] text-zinc-600`}>
+          Document Web App
         </Link>
       </div>
       <div className="flex-none">
@@ -22,13 +22,13 @@ export const Navbar = () => {
 
           <li>
             <details>
-              <summary>Menu</summary>
-              <ul className="p-2 bg-base-100 rounded-t-none w-40">
+              <summary className="border hover:border-zinc-700">Menu</summary>
+              <ul className="p-2 bg-base-100 rounded-t-none w-40 primary-text text-xs border border-zinc-300">
                 <li>
-                  <Link href={"/"}>Toturials</Link>
+                  <Link href={"/folder"}>Folder</Link>
                 </li>
                 <li>
-                  <Link href={"/"}>Trobleshoot</Link>
+                  <Link href={"/"}>Home</Link>
                 </li>
               </ul>
             </details>

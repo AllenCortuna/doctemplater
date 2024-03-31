@@ -1,99 +1,76 @@
 "use client";
-import { db } from "@/config/db";
 import { errorToast } from "@/config/toast";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
+import * as XLSX from "xlsx";
+import Dropzone from "react-dropzone";
 
 const UploadAward = () => {
-  const router = useRouter();
-  const [data, setData] = useState({
-    contractNo: "",
-    projectName: "",
-    budget: "",
-    contractAmount: "",
-    bidderInfo: "",
-  });
+  const [file, setFile] = useState(null);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setData((prevContractInfo) => ({
-      ...prevContractInfo,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log("Contract Info:", data);
-    try {
-      // Add the new Award!
-      const result = await db.award.add(data);
-      console.log(`Award successfully added. Got id ${result}`);
-      router.push(`/award/${result}`)
-      // router.push(`/`)
-    } catch (error) {
-      errorToast(`${error}`);
+  const handleFileUpload = (acceptedFiles) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
     }
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = event.target.result;
+        const workbook = XLSX.read(data, { type: "binary" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        // Store the data in local storage
+        localStorage.setItem("excelData", JSON.stringify(jsonData));
+      };
+      reader.readAsBinaryString(file);
+    }
+    const excelData = JSON.parse(localStorage.getItem("excelData"));
+    console.log(excelData);
+    console.log(file);
+  };
+
   return (
-    <div className="flex justify-center">
-      {/* UploadProject */}
-      <ToastContainer />
+    <div className="flex justify-center ">
       <form
         onSubmit={handleSubmit}
-        className="justify-start flex flex-col gap-5 mt-10 w-auto rounded-xl shadow-sm p-8 max-w-[65rem] bg-zinc-50"
+        className="flex flex-col items-center mt-20 bg-zinc-50 maw-w-[50rem] p-8 rounded-xl shadow-sm"
       >
-        {/* Notice of Award */}
-        <span className="justify-start flex flex-col gap-5 w-50 w-[30rem]">
-          <input
-            type="text"
-            name="contractNo"
-            value={data.contractNo}
-            onChange={handleChange}
-            placeholder="Contract NO:"
-            className="custom-input"
-          />
-
-          <textarea
-            name="projectName"
-            value={data.projectName}
-            onChange={handleChange}
-            className="custom-textarea"
-            placeholder="Project Name:"
-            rows={4}
-          ></textarea>
-
-          <input
-            type="text"
-            name="budget"
-            value={data.budget}
-            onChange={handleChange}
-            className="custom-input"
-            placeholder="Budget for Contract:"
-          />
-          <input
-            type="text"
-            name="contractAmount"
-            value={data.contractAmount}
-            onChange={handleChange}
-            placeholder="Contract Amount:"
-            className="custom-input"
-          />
-        </span>
-        <span className="justify-start flex flex-col gap-5 w-50 w-[30rem] bg-zinc-100 mt-5">
-          <textarea
-            name="bidderInfo"
-            value={data.bidderInfo}
-            onChange={handleChange}
-            className="custom-textarea"
-            placeholder="Bidder Number 1, Amount, Bidder Number 2, Amount"
-            rows={8}
-          ></textarea>
-        </span>
+        <ToastContainer />
+        <Dropzone
+          onDrop={handleFileUpload}
+          accept={{ "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"] }}
+          maxFiles={1}
+          className="p-4 border-2 border-dashed border-gray-600 rounded-md cursor-pointer"
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div
+              {...getRootProps()}
+              className="flex flex-col items-center p-20 border-2 border-dashed border-zinc-500 rounded-md cursor-pointer"
+            >
+              <input {...getInputProps()} />
+              <span className="text-gray-400 text-xs min-w-[32rem] text-center m-auto">
+                {file ? (
+                  <span className="text-sm flex justify-center text-center gap-2">
+                    <Image src="/ms-excel.png" alt="Example Image" width={40} height={40} />
+                    <p className="my-auto">{file.name}</p>
+                  </span>
+                ) : (
+                  "Drag and drop an Excel file here, or Click to select a file"
+                )}
+              </span>
+            </div>
+          )}
+        </Dropzone>
         <button
           type="submit"
-          className="btn btn-neutral text-xs w-32 ml-auto mr-0"
+          className="btn btn-primary px-10 mt-8 text-xs text-white"
+          disabled={!file}
         >
           Submit
         </button>
