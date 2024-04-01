@@ -38,7 +38,7 @@ const UploadAward = () => {
       const folderData = JSON.parse(localStorage.getItem("folderData"));
       const response = await axios.post(
         "http://localhost:3000/api/upload-award",
-        JSON.stringify({ excelData, noaPath: folderData?.noaPath }),
+        JSON.stringify({ excelData, folderData }),
         {
           headers: {
             "Content-Type": "application/json",

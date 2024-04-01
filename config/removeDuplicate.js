@@ -5,7 +5,7 @@ export const removeDuplicate = (array) => {
   // Filter the array based on the first item (index 0) of each sub-array
   const uniqueArray = array.filter((subArray) => {
     // Check if the length of the sub-array is exactly 13
-    if (subArray.length === 13) {
+    if (subArray.length === 7) {
       const key = subArray[0];
 
       // Check if the key is already present in uniqueKeys

@@ -72,9 +72,13 @@ export const amountToWords = (amount) => {
   const [pesos, cents] = amount.split(".");
   const pesosInWords =
     numberToWordsRecursive(parseInt(pesos.replace(/\D/g, ""))) || "Zero";
-  const centsInWords = numberToWordsRecursive(parseInt(cents) || 0) || "Zero";
+  // const centsInWords = cents
+  //   ? numberToWordsRecursive(parseInt(cents) || 0) || "Zero"
+  //   : "Only";
 
   const fraction = `${cents || "00"}/100`;
 
-  return `${pesosInWords} Pesos & ${fraction}`;
+  return cents
+    ? `${pesosInWords} Pesos & ${fraction}`
+    : `${pesosInWords} Pesos Only`;
 };

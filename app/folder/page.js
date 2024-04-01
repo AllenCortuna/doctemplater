@@ -1,9 +1,15 @@
 "use client";
+import { successToast } from "@/config/toast";
 import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 
 const Folder = () => {
-  const [data, setData] = useState({ noaPath: "" });
+  const [data, setData] = useState({
+    noaPath: "",
+    noaTemplate: "",
+    ntpPath: "",
+    ntpTemplate: "",
+  });
 
   useEffect(() => {
     const folderData = JSON.parse(localStorage.getItem("folderData"));
@@ -36,6 +42,33 @@ const Folder = () => {
         <input
           name="noaPath"
           value={data?.noaPath}
+          onChange={handleChange}
+          // onPaste={handlePaste}
+          className="custom-input w-full"
+        ></input>
+
+        <p className="primary-text mt-4">Where to find the Award Template?</p>
+        <input
+          name="noaTemplate"
+          value={data?.noaTemplate}
+          onChange={handleChange}
+          // onPaste={handlePaste}
+          className="custom-input w-full"
+        ></input>
+
+        <p className="primary-text mt-10">Where to save NTP?</p>
+        <input
+          name="noaPath"
+          value={data?.ntpPath}
+          onChange={handleChange}
+          // onPaste={handlePaste}
+          className="custom-input w-full"
+        ></input>
+
+        <p className="primary-text mt-4">Where to find the NTP Template?</p>
+        <input
+          name="noaTemplate"
+          value={data?.ntpTemplate}
           onChange={handleChange}
           // onPaste={handlePaste}
           className="custom-input w-full"
