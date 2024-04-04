@@ -38,13 +38,14 @@ const Folder = () => {
         onSubmit={handleSubmit}
         className="justify-center flex flex-col gap-3 mt-10 w-auto rounded-xl shadow-sm p-8 min-w-[50rem] bg-zinc-50"
       >
+        {/* AWARD */}
         <p className="primary-text">Where to save Award?</p>
         <input
           name="noaPath"
           value={data?.noaPath}
           onChange={handleChange}
           // onPaste={handlePaste}
-          className="custom-input w-full"
+          className="custom-input"
         ></input>
 
         <p className="primary-text mt-4">Where to find the Award Template?</p>
@@ -53,25 +54,25 @@ const Folder = () => {
           value={data?.noaTemplate}
           onChange={handleChange}
           // onPaste={handlePaste}
-          className="custom-input w-full"
+          className="custom-input"
         ></input>
 
         <p className="primary-text mt-10">Where to save NTP?</p>
         <input
-          name="noaPath"
+          name="ntpPath"
           value={data?.ntpPath}
           onChange={handleChange}
           // onPaste={handlePaste}
-          className="custom-input w-full"
+          className="custom-input"
         ></input>
 
         <p className="primary-text mt-4">Where to find the NTP Template?</p>
         <input
-          name="noaTemplate"
+          name="ntpTemplate"
           value={data?.ntpTemplate}
           onChange={handleChange}
           // onPaste={handlePaste}
-          className="custom-input w-full"
+          className="custom-input"
         ></input>
 
         <button

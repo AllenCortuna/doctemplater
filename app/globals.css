@@ -4,6 +4,7 @@
 
 * {
   box-sizing: border-box;
+  /* border: 1px solid red; */
 }
 body {
   color: #27272a;
@@ -17,7 +18,7 @@ body {
 
 @layer components {
   .custom-input {
-    @apply input input-sm text-zinc-600 input-bordered text-xs bg-zinc-100 focus:outline-primary focus:border-zinc-100;
+    @apply input input-sm text-xs text-zinc-700 input-bordered bg-zinc-100 focus:outline-primary focus:border-zinc-100;
   }
   .custom-textarea {
     @apply textarea textarea-bordered w-auto resize-none text-xs bg-zinc-100 focus:outline-primary focus:border-primary focus:border-zinc-100;
