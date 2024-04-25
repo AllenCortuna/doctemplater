@@ -25,3 +25,22 @@ export const convertToDate = (int) => {
 
   return `${month} ${day}, ${year}`;
 };
+
+export function dateSuffix(day) {
+  let suffix;
+  switch (true) {
+    case (day === 1 || day === 21 || day === 31):
+      suffix = 'st';
+      break;
+    case (day === 2 || day === 22):
+      suffix = 'nd';
+      break;
+    case (day === 3 || day === 23):
+      suffix = 'rd';
+      break;
+    default:
+      suffix = 'th';
+  }
+
+  return `${day}${suffix}`;
+}

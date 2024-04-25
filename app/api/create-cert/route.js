@@ -4,11 +4,9 @@ import path from "path";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import * as xlsx from "xlsx";
-import { convertToDate } from "@/config/convertToDate";
+import { convertToDate, dateSuffix } from "@/config/convertToDate";
 import { filterByLen } from "@/config/removeDup";
 import {
-  extractContracts,
-  extractIDs,
   extractValue,
 } from "@/config/createMemoFunction";
 
@@ -17,7 +15,7 @@ export async function POST(request) {
   try {
     const requestData = await request.json();
     const memoTemplate = fs.readFileSync(
-      path.resolve(__dirname, requestData?.memoTemplate),
+      path.resolve(__dirname, requestData?.certTemplate),
       "binary"
     );
     const memoZip = new PizZip(memoTemplate);
@@ -33,7 +31,8 @@ export async function POST(request) {
 
     const dataToAdd = {
       cert_type: extractValue(excel[0]),
-      memo_date: convertToDate(extractValue(excel[1])),
+      day: dateSuffix(new Date(convertToDate(extractValue(excel[4]))).toLocaleString('default', { day: 'numeric' })),
+      month: new Date(convertToDate(extractValue(excel[4]))).toLocaleString('default', { month: 'long' }),
       start_date: convertToDate(extractValue(excel[2])),
       end_date: convertToDate(extractValue(excel[3])),
       cert_date: convertToDate(extractValue(excel[4])),
@@ -55,7 +54,7 @@ export async function POST(request) {
       fs.writeFileSync(
         path.resolve(
           __dirname,
-          `${requestData?.outputPath}/MEMO ${excel
+          `${requestData?.outputPath}/CERT ${excel
             .slice(6)
             .map(([first]) => first)
             .join(", ")} ${extractValue(excel[0])}.docx`
@@ -73,6 +72,6 @@ export async function POST(request) {
 
   return NextResponse.json({
     status: 200,
-    message: "MEMO written succesfully",
+    message: "CERT written succesfully",
   });
 }
