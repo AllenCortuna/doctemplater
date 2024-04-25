@@ -31,6 +31,7 @@ export async function POST(request) {
 
     const dataToAdd = {
       cert_type: extractValue(excel[0]),
+      cert_type_upper: extractValue(excel[0]).toUpperCase(),
       day: dateSuffix(new Date(convertToDate(extractValue(excel[4]))).toLocaleString('default', { day: 'numeric' })),
       month: new Date(convertToDate(extractValue(excel[4]))).toLocaleString('default', { month: 'long' }),
       start_date: convertToDate(extractValue(excel[2])),

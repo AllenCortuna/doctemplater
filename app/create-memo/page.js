@@ -25,7 +25,7 @@ const Folder = () => {
     }));
   };
 
-  const handleSubmitMemo = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     localStorage.setItem("memoData", JSON.stringify(data));
     try {
@@ -39,17 +39,6 @@ const Folder = () => {
           },
         }
       );
-      successToast(memoResponse.data.message);
-    } catch (error) {
-      console.log("ERROR: ", error);
-      errorToast(error);
-    }
-  };
-  const handleSubmitCert = async (e) => {
-    e.preventDefault();
-    localStorage.setItem("memoData", JSON.stringify(data));
-    try {
-      const pathData = JSON.parse(localStorage.getItem("memoData"));
       const certResponse = await axios.post(
         "http://localhost:3000/api/create-cert",
         JSON.stringify(pathData),
@@ -59,6 +48,7 @@ const Folder = () => {
           },
         }
       );
+      successToast(memoResponse.data.message);
       successToast(certResponse.data.message);
     } catch (error) {
       console.log("ERROR: ", error);
@@ -69,22 +59,15 @@ const Folder = () => {
   return (
     <div className="flex w-screen p-20 justify-center">
       <ToastContainer />
-      <form className="justify-center flex flex-col gap-3 mt-10 w-auto rounded-xl shadow-sm p-8 min-w-[50rem] bg-zinc-50">
+      <form className="justify-center flex flex-col gap-5 mt-10 w-auto rounded-xl shadow-sm p-10 min-w-[60rem] bg-zinc-50">
         <span className="mb-5 flex flex-row gap-10 justify-start ">
           <button
             type="submit"
             className="btn btn-neutral text-xs w-60"
-            onClick={handleSubmitMemo}
+            onClick={handleSubmit}
           >
-            Compile Memorandum
-          </button>
-
-          <button
-            type="submit"
-            className="btn btn-neutral text-xs w-60"
-            onClick={handleSubmitCert}
-          >
-            Compile Certifications
+            {/* Compile Memorandum and Certifications */}
+            Compile Cert and Memo
           </button>
         </span>
 
@@ -94,7 +77,6 @@ const Folder = () => {
           name="outputPath"
           value={data?.outputPath}
           onChange={handleChange}
-          // onPaste={handlePaste}
           className="custom-input"
         ></input>
 
@@ -103,18 +85,16 @@ const Folder = () => {
           name="memoTemplate"
           value={data?.memoTemplate}
           onChange={handleChange}
-          // onPaste={handlePaste}
           className="custom-input"
         ></input>
 
-        <p className="primary-text mt-10">
+        <p className="primary-text mt-4">
           Where to find the Certifiaction Template?
         </p>
         <input
           name="certTemplate"
           value={data?.certTemplate}
           onChange={handleChange}
-          // onPaste={handlePaste}
           className="custom-input"
         ></input>
 
@@ -123,7 +103,6 @@ const Folder = () => {
           name="excelData"
           value={data?.excelData}
           onChange={handleChange}
-          // onPaste={handlePaste}
           className="custom-input"
         ></input>
       </form>

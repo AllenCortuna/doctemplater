@@ -33,6 +33,7 @@ export async function POST(request) {
 
     const dataToAdd = {
       cert_type: extractValue(excel[0]),
+      cert_type_upper: extractValue(excel[0]).toUpperCase(),
       memo_date: convertToDate(extractValue(excel[1])),
       start_date: convertToDate(extractValue(excel[2])),
       end_date: convertToDate(extractValue(excel[3])),
