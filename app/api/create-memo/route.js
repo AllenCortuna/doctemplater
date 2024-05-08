@@ -57,7 +57,7 @@ export async function POST(request) {
         path.resolve(
           __dirname,
           `${requestData?.outputPath}/MEMO ${excel
-            .slice(6)
+            .slice(6,11)
             .map(([first]) => first)
             .join(", ")} ${extractValue(excel[0])}.docx`
         ),
