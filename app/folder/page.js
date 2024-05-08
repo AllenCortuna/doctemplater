@@ -12,8 +12,8 @@ const Folder = () => {
   });
 
   useEffect(() => {
-    const folderData = JSON.parse(localStorage.getItem("folderData"));
-    setData(folderData);
+    const noaFolderData = JSON.parse(localStorage.getItem("noaFolderData"));
+    setData(noaFolderData);
   }, []);
 
   const handleChange = (e) => {
@@ -27,7 +27,7 @@ const Folder = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", data);
-    localStorage.setItem("folderData", JSON.stringify(data));
+    localStorage.setItem("noaFolderData", JSON.stringify(data));
     successToast("Folder directories has been updated");
   };
 

@@ -13,8 +13,8 @@ const Folder = () => {
   });
 
   useEffect(() => {
-    const folderData = JSON.parse(localStorage.getItem("memoData"));
-    setData(folderData);
+    const memoData = JSON.parse(localStorage.getItem("memoData"));
+    setData(memoData);
   }, []);
 
   const handleChange = (e) => {

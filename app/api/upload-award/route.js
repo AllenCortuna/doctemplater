@@ -24,7 +24,7 @@ export async function POST(request) {
         // Get the template file
         const templateFilePath = path.resolve(
           __dirname,
-          data?.folderData?.noaTemplate
+          data?.noaFolderData?.noaTemplate
         );
         const templateFile = fs.readFileSync(templateFilePath, "binary");
 
@@ -55,7 +55,7 @@ export async function POST(request) {
         fs.writeFileSync(
           path.resolve(
             __dirname,
-            `${data?.folderData?.noaPath}/${item[0]} NOA.docx`
+            `${data?.noaFolderData?.noaPath}/${item[0]} NOA.docx`
           ),
           outputDocumentBuffer
         );
@@ -69,7 +69,7 @@ export async function POST(request) {
     }
 
     return NextResponse.json({
-      results: `Award Created was created in this folder: "${data?.folderData?.noaPath}"`,
+      results: `Award Created was created in this folder: "${data?.noaFolderData?.noaPath}"`,
     });
   } catch (error) {
     console.error("ERROR: ", error);
