@@ -4,11 +4,14 @@ import path from "path";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import * as xlsx from "xlsx";
-import { convertToDate, dateSuffix, suffix, toTitleCase } from "@/config/convertToDate";
-import { filterByLen } from "@/config/removeDup";
 import {
-  extractValue,
-} from "@/config/createMemoFunction";
+  convertToDate,
+  dateSuffix,
+  suffix,
+  toTitleCase,
+} from "@/config/convertToDate";
+import { filterByLen } from "@/config/removeDup";
+import { extractValue } from "@/config/createMemoFunction";
 
 export async function POST(request) {
   // for the MEMO
@@ -32,10 +35,26 @@ export async function POST(request) {
     const dataToAdd = {
       cert_type: extractValue(excel[0]),
       cert_type_upper: extractValue(excel[0]).toUpperCase(),
-      day: dateSuffix(new Date(convertToDate(extractValue(excel[1]))).toLocaleString('default', { day: 'numeric' })),
-      suffix: suffix(new Date(convertToDate(extractValue(excel[1]))).toLocaleString('default', { day: 'numeric' })),
-      month: toTitleCase(new Date(convertToDate(extractValue(excel[1]))).toLocaleString('default', { month: 'long' })),
-      year: new Date(convertToDate(extractValue(excel[1]))).toLocaleString('default', { year: 'long' }),
+      day: new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
+        "default",
+        { day: "numeric" }
+      ),
+      suffix: suffix(
+        new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
+          "default",
+          { day: "numeric" }
+        )
+      ),
+      month: toTitleCase(
+        new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
+          "default",
+          { month: "long" }
+        )
+      ),
+      year: new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
+        "default",
+        { year: "numeric" }
+      ),
       start_date: convertToDate(extractValue(excel[2])),
       end_date: convertToDate(extractValue(excel[3])),
       table: excel.slice(5).map((subArr) => {
@@ -45,6 +64,7 @@ export async function POST(request) {
         };
       }),
     };
+    console.log("dataToAdd :>> ", dataToAdd);
     memoOutputDoc.setData(dataToAdd);
     try {
       // Attempt to render the document (Add data to the template)
@@ -57,23 +77,29 @@ export async function POST(request) {
         path.resolve(
           __dirname,
           `${requestData?.outputPath}/${excel
-            .slice(5,11)
+            .slice(5, 11)
             .map(([first]) => first)
             .join(", ")} ${extractValue(excel[0])} PIO CERT.docx`
         ),
         outputDocumentBuffer
       );
+
+      return NextResponse.json({
+        status: 200,
+        message: `"CERT written succesfully"`,
+      });
     } catch (error) {
-      console.error(`ERROR Filling out Template:`);
       console.error(error);
+      return NextResponse.json({
+        status: 200,
+        error: `Error: ${error}`,
+      });
     }
   } catch (error) {
-    console.error(`ERROR Loading Template:`);
     console.error(error);
+    return NextResponse.json({
+      status: 200,
+      error: `Error: ${error.Error}`,
+    });
   }
-
-  return NextResponse.json({
-    status: 200,
-    message: "CERT written succesfully",
-  });
 }

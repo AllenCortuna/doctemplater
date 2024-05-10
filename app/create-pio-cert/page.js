@@ -38,7 +38,12 @@ const Folder = () => {
           },
         }
       );
-      successToast(certResponse.data.message);
+      if (certResponse.data.message) {
+        successToast(certResponse.data.message);
+      } else {
+        errorToast(certResponse.data.error);
+      }
+     
     } catch (error) {
       console.log("ERROR: ", error);
       errorToast(error);
@@ -61,7 +66,7 @@ const Folder = () => {
         </span>
 
         {/* AWARD */}
-        <p className="primary-text">Where to save Memo and Certifications?</p>
+        <p className="primary-text">Where to save Certification?</p>
         <input
           name="outputPath"
           value={data?.outputPath}

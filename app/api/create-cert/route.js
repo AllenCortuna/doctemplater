@@ -6,9 +6,7 @@ import Docxtemplater from "docxtemplater";
 import * as xlsx from "xlsx";
 import { convertToDate, dateSuffix } from "@/config/convertToDate";
 import { filterByLen } from "@/config/removeDup";
-import {
-  extractValue,
-} from "@/config/createMemoFunction";
+import { extractValue } from "@/config/createMemoFunction";
 
 export async function POST(request) {
   // for the MEMO
@@ -32,8 +30,16 @@ export async function POST(request) {
     const dataToAdd = {
       cert_type: extractValue(excel[0]),
       cert_type_upper: extractValue(excel[0]).toUpperCase(),
-      day: dateSuffix(new Date(convertToDate(extractValue(excel[4]))).toLocaleString('default', { day: 'numeric' })),
-      month: new Date(convertToDate(extractValue(excel[4]))).toLocaleString('default', { month: 'long' }),
+      day: dateSuffix(
+        new Date(convertToDate(extractValue(excel[4]))).toLocaleString(
+          "default",
+          { day: "numeric" }
+        )
+      ),
+      month: new Date(convertToDate(extractValue(excel[4]))).toLocaleString(
+        "default",
+        { month: "long" }
+      ),
       start_date: convertToDate(extractValue(excel[2])),
       end_date: convertToDate(extractValue(excel[3])),
       cert_date: convertToDate(extractValue(excel[4])),
@@ -56,23 +62,29 @@ export async function POST(request) {
         path.resolve(
           __dirname,
           `${requestData?.outputPath}/CERT ${excel
-            .slice(6,11)
+            .slice(6, 11)
             .map(([first]) => first)
             .join(", ")} ${extractValue(excel[0])}.docx`
         ),
         outputDocumentBuffer
       );
+
+      return NextResponse.json({
+        status: 200,
+        message: "CERT written succesfully",
+      });
     } catch (error) {
-      console.error(`ERROR Filling out Template:`);
       console.error(error);
+      return NextResponse.json({
+        status: 200,
+        error: `Error: ${error}`,
+      });
     }
   } catch (error) {
-    console.error(`ERROR Loading Template:`);
     console.error(error);
+    return NextResponse.json({
+      status: 200,
+      error: `Error: ${error}`,
+    });
   }
-
-  return NextResponse.json({
-    status: 200,
-    message: "CERT written succesfully",
-  });
 }

@@ -57,23 +57,29 @@ export async function POST(request) {
         path.resolve(
           __dirname,
           `${requestData?.outputPath}/MEMO ${excel
-            .slice(6,11)
+            .slice(6, 11)
             .map(([first]) => first)
             .join(", ")} ${extractValue(excel[0])}.docx`
         ),
         outputDocumentBuffer
       );
+
+      return NextResponse.json({
+        status: 200,
+        message: "MEMO written succesfully",
+      });
     } catch (error) {
-      console.error(`ERROR Filling out Template:`);
       console.error(error);
+      return NextResponse.json({
+        status: 200,
+        error: `Error: ${error}`,
+      });
     }
   } catch (error) {
-    console.error(`ERROR Loading Template:`);
     console.error(error);
+    return NextResponse.json({
+      status: 200,
+      error: `Error: ${error}`,
+    });
   }
-
-  return NextResponse.json({
-    status: 200,
-    message: "MEMO written succesfully",
-  });
 }
