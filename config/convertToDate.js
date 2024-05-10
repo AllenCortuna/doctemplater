@@ -28,14 +28,15 @@ export const convertToDate = (int) => {
 
 export function dateSuffix(day) {
   let suffix;
+  const num = parseInt(day)
   switch (true) {
-    case (day === 1 || day === 21 || day === 31):
+    case (num == 1 || num == 21 || num == 31):
       suffix = 'st';
       break;
-    case (day === 2 || day === 22):
+    case (num == 2 || num == 22):
       suffix = 'nd';
       break;
-    case (day === 3 || day === 23):
+    case (num == 3 || num == 23):
       suffix = 'rd';
       break;
     default:
@@ -43,4 +44,30 @@ export function dateSuffix(day) {
   }
 
   return `${day}${suffix}`;
+}
+
+export function suffix(day) {
+  let suffix;
+  const num = parseInt(day)
+  switch (true) {
+    case (num == 1 || num == 21 || num == 31):
+      suffix = 'st';
+      break;
+    case (num == 2 || num == 22):
+      suffix = 'nd';
+      break;
+    case (num == 3 || num == 23):
+      suffix = 'rd';
+      break;
+    default:
+      suffix = 'th';
+  }
+
+  return `${suffix}`;
+}
+
+export function toTitleCase(str) {
+  return str.replace(/\b\w/g, function(char) {
+    return char.toUpperCase();
+  });
 }

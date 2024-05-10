@@ -11,8 +11,11 @@ export default function Home() {
         </button>
       </Link>
 
-
-
+      <Link href={"/create-pio-cert"}>
+        <button className="btn btn-outline rounded-md text-zinc-500 text-md">
+          Cerfication Ate Ney
+        </button>
+      </Link>
       
       <Link href={"/upload-award"}>
         <button className="btn btn-outline rounded-md text-zinc-500 text-md">
