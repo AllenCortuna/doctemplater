@@ -22,6 +22,12 @@ export default function Home() {
           Create Award
         </button>
       </Link>
+
+      <Link href={"/create-ntp"}>
+        <button className="btn btn-outline rounded-md text-zinc-500 text-md">
+          Create NTP
+        </button>
+      </Link>
     </div>
   );
 }
