@@ -1,10 +1,10 @@
 "use client";
 import { errorToast, successToast } from "@/config/toast";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
-const Folder = () => {
+const CreateNTP = () => {
   const [data, setData] = useState({
     contractID: "",
     projectName: "",
@@ -13,11 +13,6 @@ const Folder = () => {
     proprietor: "",
     designation: ""
   });
-
-  // useEffect(() => {
-  //   const memoData = JSON.parse(localStorage.getItem("ntpData"));
-  //   setData(memoData);
-  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,20 +24,30 @@ const Folder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("ntpData", JSON.stringify(data));
     try {
-      const pathData = JSON.parse(localStorage.getItem("ntpData"));
-      const certResponse = await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/api/create-ntp",
-        JSON.stringify(pathData),
+        data,
         {
           headers: {
             "Content-Type": "application/json",
           },
+          responseType: 'blob', // This is important for handling binary data
         }
       );
-      if (certResponse.data.message) {
-        successToast(certResponse.data.message);
+
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${data.contractID}_NTP.docx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        successToast("Document downloaded successfully");
+
+        // Reset form data
         setData({
           contractID: "",
           projectName: "",
@@ -50,13 +55,13 @@ const Folder = () => {
           contractorAddress: "",
           proprietor: "",
           designation: ""
-        })
+        });
       } else {
-        errorToast(certResponse.data.error);
+        errorToast("Failed to download document");
       }
     } catch (error) {
       console.log("ERROR: ", error);
-      errorToast(error);
+      errorToast(error.message);
     }
   };
 
@@ -68,7 +73,7 @@ const Folder = () => {
         <span className="grid grid-cols-2 gap-8">
           <input
             name="contractID"
-            value={data?.contractID}
+            value={data.contractID}
             onChange={handleChange}
             className="custom-input"
             placeholder="Contract ID"
@@ -77,7 +82,7 @@ const Folder = () => {
 
         <input
           name="projectName"
-          value={data?.projectName}
+          value={data.projectName}
           onChange={handleChange}
           className="custom-input"
           placeholder="Project Name"
@@ -85,7 +90,7 @@ const Folder = () => {
 
         <input
           name="contractorName"
-          value={data?.contractorName}
+          value={data.contractorName}
           onChange={handleChange}
           className="custom-input"
           placeholder="Contractor Name"
@@ -93,7 +98,7 @@ const Folder = () => {
 
         <input
           name="contractorAddress"
-          value={data?.contractorAddress}
+          value={data.contractorAddress}
           onChange={handleChange}
           className="custom-input"
           placeholder="Contractor Address"
@@ -102,14 +107,14 @@ const Folder = () => {
         <span className="grid grid-cols-2 gap-8">
           <input
             name="proprietor"
-            value={data?.proprietor}
+            value={data.proprietor}
             onChange={handleChange}
             className="custom-input"
             placeholder="Proprietor"
           ></input>
           <input
             name="designation"
-            value={data?.designation}
+            value={data.designation}
             onChange={handleChange}
             className="custom-input"
             placeholder="Designation"
@@ -122,7 +127,6 @@ const Folder = () => {
             className="btn btn-neutral text-xs w-60"
             onClick={handleSubmit}
           >
-            {/* Compile Memorandum and Certifications */}
             Submit NTP
           </button>
         </span>
@@ -131,4 +135,4 @@ const Folder = () => {
   );
 };
 
-export default Folder;
+export default CreateNTP;

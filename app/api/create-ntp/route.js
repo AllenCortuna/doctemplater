@@ -3,57 +3,49 @@ import fs from "fs";
 import path from "path";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
-import { extractValue } from "@/config/createMemoFunction";
 
 export async function POST(request) {
   // for the MEMO
   try {
     const requestData = await request.json();
-    const ntpTemplate = fs.readFileSync(
-      path.resolve(__dirname, "../todo the path" ),
-      "binary"
-    );
+    const templatePath = path.join(process.cwd(), 'public', 'goodsNTPTemplate.docx');
+    console.log(`Template Path: ${templatePath}`)
+    const ntpTemplate = fs.readFileSync(templatePath, "binary");
     const ntpZip = new PizZip(ntpTemplate);
-    let memoOutputDoc = new Docxtemplater(ntpZip);
-
+    let ntpOutputDoc = new Docxtemplater(ntpZip);
 
     const dataToAdd = requestData;
     console.log("dataToAdd :>> ", dataToAdd);
-    memoOutputDoc.setData(dataToAdd);
+    ntpOutputDoc.setData(dataToAdd);
+
     try {
       // Attempt to render the document (Add data to the template)
-      memoOutputDoc.render();
+      ntpOutputDoc.render();
       // Create a buffer to store the output data
-      let outputDocumentBuffer = memoOutputDoc
-        .getZip()
-        .generate({ type: "nodebuffer" });
-      fs.writeFileSync(
-        path.resolve(
-          __dirname,
-          `${requestData?.outputPath}/${excel
-            .slice(5, 11)
-            .map(([first]) => first)
-            .join(", ")} ${extractValue(excel[0])} NTP.docx`
-        ),
-        outputDocumentBuffer
-      );
+      let outputDocumentBuffer = ntpOutputDoc.getZip().generate({ type: "nodebuffer" });
 
-      return NextResponse.json({
+      // Set headers to indicate a file download
+      const responseHeaders = new Headers({
+        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "Content-Disposition": `attachment; filename="${dataToAdd.contractID}_NTP.docx"`
+      });
+
+      return new NextResponse(outputDocumentBuffer, {
         status: 200,
-        message: `"NTP written succesfully"`,
+        headers: responseHeaders
       });
     } catch (error) {
       console.error(error);
       return NextResponse.json({
-        status: 200,
-        error: `Error: ${error}`,
+        status: 500,
+        error: `Error: ${error.message}`,
       });
     }
   } catch (error) {
     console.error(error);
     return NextResponse.json({
-      status: 200,
-      error: `Error: ${error.Error}`,
+      status: 500,
+      error: `Error: ${error.message}`,
     });
   }
 }
