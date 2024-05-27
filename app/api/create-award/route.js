@@ -5,7 +5,7 @@ import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import { amountToWords } from "@/config/amountToWords";
 import { formatNumber } from "@/config/formatNumber";
-import { convertToDate, formatDate } from "@/config/convertToDate";
+import { formatDate } from "@/config/convertToDate";
 
 export async function POST(request) {
   // for the MEMO

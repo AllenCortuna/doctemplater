@@ -24,9 +24,10 @@ const CreateNTP = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('process.env.BASE_URL :>> ', process.env.BASE_URL);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/create-ntp",
+        `${process.env.BASE_URL}/api/create-ntp`,
         data,
         {
           headers: {

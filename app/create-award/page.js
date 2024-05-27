@@ -28,7 +28,7 @@ const CreateNOA = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/create-award",
+        `${process.env.BASE_URL}/api/create-award`,
         data,
         {
           headers: {
