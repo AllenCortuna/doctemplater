@@ -37,7 +37,7 @@ const UploadAward = () => {
       const excelData = JSON.parse(localStorage.getItem("excelData"));
       const noaFolderData = JSON.parse(localStorage.getItem("noaFolderData"));
       const response = await axios.post(
-        "http://localhost:3000/api/upload-award",
+        "http://localhost:3000/api/create-batch-award",
         JSON.stringify({ excelData, noaFolderData }),
         {
           headers: {

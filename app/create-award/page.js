@@ -4,14 +4,16 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
-const CreateNTP = () => {
+const CreateNOA = () => {
   const [data, setData] = useState({
+    date: "",
+    amount: "",
     contractID: "",
     projectName: "",
     contractorName: "",
     contractorAddress: "",
-    proprietor: "",
-    designation: ""
+    representative: "",
+    designation: "",
   });
 
   const handleChange = (e) => {
@@ -26,22 +28,24 @@ const CreateNTP = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/create-ntp",
+        "http://localhost:3000/api/create-award",
         data,
         {
           headers: {
             "Content-Type": "application/json",
           },
-          responseType: 'blob', // This is important for handling binary data
+          responseType: "blob", // This is important for handling binary data
         }
       );
 
       if (response.status === 200) {
-        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
+        });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = `${data.contractID} NTP.docx`;
+        a.download = `${data.contractID} NOA.docx`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -49,12 +53,14 @@ const CreateNTP = () => {
 
         // Reset form data
         setData({
+          date: "",
+          amount: "",
           contractID: "",
           projectName: "",
           contractorName: "",
           contractorAddress: "",
-          proprietor: "",
-          designation: ""
+          representative: "",
+          designation: "",
         });
       } else {
         errorToast("Failed to download document");
@@ -77,6 +83,23 @@ const CreateNTP = () => {
             onChange={handleChange}
             className="custom-input"
             placeholder="Contract ID"
+          ></input>
+          <span></span>
+          <input
+            name="date"
+            value={data.date}
+            type="date"
+            onChange={handleChange}
+            className="custom-input"
+          ></input>
+
+          <input
+            name="amount"
+            value={data.amount}
+            type="number"
+            onChange={handleChange}
+            className="custom-input"
+            placeholder="Amount"
           ></input>
         </span>
 
@@ -106,11 +129,11 @@ const CreateNTP = () => {
 
         <span className="grid grid-cols-2 gap-8">
           <input
-            name="proprietor"
-            value={data.proprietor}
+            name="representative"
+            value={data.representative}
             onChange={handleChange}
             className="custom-input"
-            placeholder="Proprietor"
+            placeholder="Representative"
           ></input>
           <input
             name="designation"
@@ -127,7 +150,7 @@ const CreateNTP = () => {
             className="btn btn-neutral text-xs w-60"
             onClick={handleSubmit}
           >
-            Submit NTP
+            Submit AWARD
           </button>
         </span>
       </form>
@@ -135,4 +158,4 @@ const CreateNTP = () => {
   );
 };
 
-export default CreateNTP;
+export default CreateNOA;

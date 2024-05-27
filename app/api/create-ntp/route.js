@@ -7,15 +7,14 @@ import Docxtemplater from "docxtemplater";
 export async function POST(request) {
   // for the MEMO
   try {
-    const requestData = await request.json();
+    const data = await request.json();
     const templatePath = path.join(process.cwd(), 'public', 'goodsNTPTemplate.docx');
     console.log(`Template Path: ${templatePath}`)
     const ntpTemplate = fs.readFileSync(templatePath, "binary");
     const ntpZip = new PizZip(ntpTemplate);
     let ntpOutputDoc = new Docxtemplater(ntpZip);
 
-    const dataToAdd = requestData;
-    console.log("dataToAdd :>> ", dataToAdd);
+    const dataToAdd = data;
     ntpOutputDoc.setData(dataToAdd);
 
     try {
@@ -27,7 +26,7 @@ export async function POST(request) {
       // Set headers to indicate a file download
       const responseHeaders = new Headers({
         "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="${dataToAdd.contractID}_NTP.docx"`
+        "Content-Disposition": `attachment; filename="${dataToAdd.contractID} NTP.docx"`
       });
 
       return new NextResponse(outputDocumentBuffer, {

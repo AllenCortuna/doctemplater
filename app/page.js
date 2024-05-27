@@ -17,7 +17,13 @@ export default function Home() {
         </button>
       </Link>
 
-      <Link href={"/upload-award"}>
+      {/* <Link href={"/create-batch-award"}>
+        <button className="btn btn-outline rounded-md text-zinc-500 text-md">
+          Create Award (batch)
+        </button>
+      </Link> */}
+
+      <Link href={"/create-award"}>
         <button className="btn btn-outline rounded-md text-zinc-500 text-md">
           Create Award
         </button>
