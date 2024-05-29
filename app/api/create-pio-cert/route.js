@@ -6,7 +6,6 @@ import Docxtemplater from "docxtemplater";
 import * as xlsx from "xlsx";
 import {
   convertToDate,
-  dateSuffix,
   suffix,
   toTitleCase,
 } from "@/config/convertToDate";

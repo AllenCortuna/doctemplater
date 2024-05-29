@@ -28,7 +28,7 @@ export const convertToDate = (int) => {
 
 export function dateSuffix(day) {
   let suffix;
-  const num = parseInt(day)
+  const num = new Date(day).getDate()
   switch (true) {
     case (num == 1 || num == 21 || num == 31):
       suffix = 'st';
@@ -43,7 +43,7 @@ export function dateSuffix(day) {
       suffix = 'th';
   }
 
-  return `${day}${suffix}`;
+  return `${num}${suffix}`;
 }
 
 export function suffix(day) {
@@ -74,17 +74,10 @@ export function toTitleCase(str) {
 
 
 export const formatDate = (dateString) => {
-  // Create a new Date object from the input string
   const date = new Date(dateString);
 
-  // Define an array of month names
-  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+};
 
-  // Get the day, month, and year from the Date object
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
 
-  // Return the formatted date string
-  return `${month} ${day} ${year}`;
-}
