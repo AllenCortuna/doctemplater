@@ -6,7 +6,6 @@ import Docxtemplater from "docxtemplater";
 import { formatDate } from "@/config/convertToDate";
 
 export async function POST(request) {
-  // for the MEMO
   try {
     const data = await request.json();
     const templatePath = path.join(
@@ -18,7 +17,6 @@ export async function POST(request) {
     const memoZip = new PizZip(memoTemplate);
     let memoOutputDoc = new Docxtemplater(memoZip);
 
-    // console.log('data :>> ', data);
     const dataToAdd = {
       certType: data.certType,
       startDate: formatDate(data.startDate),
@@ -27,7 +25,6 @@ export async function POST(request) {
       table: data.contracts
    
     };
-    // console.log("dataToAdd: ",dataToAdd)
     memoOutputDoc.setData(dataToAdd);
 
     try {

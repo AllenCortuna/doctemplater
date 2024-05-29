@@ -6,7 +6,6 @@ import Docxtemplater from "docxtemplater";
 import { dateSuffix, formatDate } from "@/config/convertToDate";
 
 export async function POST(request) {
-  // for the MEMO
   try {
     const data = await request.json();
     const templatePath = path.join(
