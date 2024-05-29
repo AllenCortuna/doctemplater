@@ -11,7 +11,7 @@ export async function POST(request) {
     const templatePath = path.join(
       process.cwd(),
       "public",
-      "certTemplate.docx"
+      "pioCertTemplate.docx"
     );
     console.log(`Template Path: ${templatePath}`);
     const certTemplate = fs.readFileSync(templatePath, "binary");
