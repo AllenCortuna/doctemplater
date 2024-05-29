@@ -13,6 +13,7 @@ export async function POST(request) {
       "public",
       "memoTemplate.docx"
     );
+    console.log(`Template Path: ${templatePath}`);
     const memoTemplate = fs.readFileSync(templatePath, "binary");
     const memoZip = new PizZip(memoTemplate);
     let memoOutputDoc = new Docxtemplater(memoZip);
@@ -39,7 +40,7 @@ export async function POST(request) {
       const responseHeaders = new Headers({
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="MEMO.docx"`,
+        "Content-Disposition": "attachment; filename=MEMO.docx",
       });
 
       return new NextResponse(outputDocumentBuffer, {

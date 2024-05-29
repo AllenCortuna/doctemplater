@@ -13,9 +13,10 @@ export async function POST(request) {
       "public",
       "certTemplate.docx"
     );
-    const memoTemplate = fs.readFileSync(templatePath, "binary");
-    const memoZip = new PizZip(memoTemplate);
-    let memoOutputDoc = new Docxtemplater(memoZip);
+    console.log(`Template Path: ${templatePath}`);
+    const certTemplate = fs.readFileSync(templatePath, "binary");
+    const certZip = new PizZip(certTemplate);
+    let certOutputDoc = new Docxtemplater(certZip);
 
     const dataToAdd = {
       endDate: formatDate(data.endDate),
@@ -27,13 +28,13 @@ export async function POST(request) {
       table: data.contracts,
     };
     // console.log("dataToAdd: ",dataToAdd)
-    memoOutputDoc.setData(dataToAdd);
+    certOutputDoc.setData(dataToAdd);
 
     try {
       // Attempt to render the document (Add data to the template)
-      memoOutputDoc.render();
+      certOutputDoc.render();
       // Create a buffer to store the output data
-      let outputDocumentBuffer = memoOutputDoc
+      let outputDocumentBuffer = certOutputDoc
         .getZip()
         .generate({ type: "nodebuffer" });
 
@@ -41,7 +42,7 @@ export async function POST(request) {
       const responseHeaders = new Headers({
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="MEMO.docx"`,
+        "Content-Disposition": "attachment; filename=MEMO.docx",
       });
 
       return new NextResponse(outputDocumentBuffer, {
