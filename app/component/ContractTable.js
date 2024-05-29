@@ -126,12 +126,12 @@ const ContractTable = ({inputArr, setInputArr}) => {
           </tbody>
         </table>
       </div>
-      <button
+      {/* <button
         onClick={handleLog}
         className="btn btn-sm btn-neutral text-xs w-60 mx-auto"
       >
         console.log()
-      </button>
+      </button> */}
     </div>
   );
 };
