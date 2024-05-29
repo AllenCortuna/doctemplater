@@ -113,7 +113,12 @@ const App = () => {
                   <td>{info.contractID}</td>
                   <td>{info.projectName}</td>
                   <td>
-                    <button onClick={() => handleDelete(ind)} className="btn btn-error btn-sm btn-outline">Delete</button>
+                    <button
+                      onClick={() => handleDelete(ind)}
+                      className="btn btn-error btn-sm btn-outline"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))
