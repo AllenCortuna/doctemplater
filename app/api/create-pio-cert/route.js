@@ -3,102 +3,61 @@ import fs from "fs";
 import path from "path";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
-import * as xlsx from "xlsx";
-import {
-  convertToDate,
-  suffix,
-  toTitleCase,
-} from "@/config/convertToDate";
-import { filterByLen } from "@/config/removeDup";
-import { extractValue } from "@/config/createMemoFunction";
+import { formatDate, suffix } from "@/config/convertToDate";
 
 export async function POST(request) {
-  // for the MEMO
   try {
-    const requestData = await request.json();
-    const memoTemplate = fs.readFileSync(
-      path.resolve(__dirname, requestData?.certTemplate),
-      "binary"
-    );
-    const memoZip = new PizZip(memoTemplate);
-    let memoOutputDoc = new Docxtemplater(memoZip);
-    const memoPath = requestData?.excelData;
-    const buffer = fs.readFileSync(memoPath);
-    const workbook = xlsx.read(buffer, { type: "buffer" });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    const data = xlsx.utils.sheet_to_json(sheet);
-    const unfilterData = data.map((obj) => Object.values(obj));
-    const excel = filterByLen(unfilterData, 2);
+    const data = await request.json();
+    const templatePath = path.join(process.cwd(), "public", "pioTemplate.docx");
+    const pioTemplate = fs.readFileSync(templatePath, "binary");
+    const pioZip = new PizZip(pioTemplate);
+    let pioOutputDoc = new Docxtemplater(pioZip);
 
     const dataToAdd = {
-      cert_type: extractValue(excel[0]),
-      cert_type_upper: extractValue(excel[0]).toUpperCase(),
-      day: new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
-        "default",
-        { day: "numeric" }
-      ),
-      suffix: suffix(
-        new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
-          "default",
-          { day: "numeric" }
-        )
-      ),
-      month: toTitleCase(
-        new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
-          "default",
-          { month: "long" }
-        )
-      ),
-      year: new Date(convertToDate(extractValue(excel[1]))).toLocaleString(
-        "default",
-        { year: "numeric" }
-      ),
-      start_date: convertToDate(extractValue(excel[2])),
-      end_date: convertToDate(extractValue(excel[3])),
-      table: excel.slice(5).map((subArr) => {
-        return {
-          index: subArr[0],
-          value: subArr[1],
-        };
+      certType: data.certType,
+      startDate: formatDate(data.startDate),
+      endDate: formatDate(data.endDate),
+      table: data.contracts,
+      day: new Date(data.issueDate).getDate(),
+      suffix: suffix(new Date(data.issueDate)),
+      year: new Date(data.issueDate).getFullYear(),
+      month: new Date(data.issueDate).toLocaleString("default", {
+        month: "long",
       }),
     };
-    console.log("dataToAdd :>> ", dataToAdd);
-    memoOutputDoc.setData(dataToAdd);
+    pioOutputDoc.setData(dataToAdd);
+
     try {
       // Attempt to render the document (Add data to the template)
-      memoOutputDoc.render();
+      pioOutputDoc.render();
       // Create a buffer to store the output data
-      let outputDocumentBuffer = memoOutputDoc
+      let outputDocumentBuffer = pioOutputDoc
         .getZip()
         .generate({ type: "nodebuffer" });
-      fs.writeFileSync(
-        path.resolve(
-          __dirname,
-          `${requestData?.outputPath}/${excel
-            .slice(5, 11)
-            .map(([first]) => first)
-            .join(", ")} ${extractValue(excel[0])} PIO CERT.docx`
-        ),
-        outputDocumentBuffer
-      );
 
-      return NextResponse.json({
+      // Set headers to indicate a file download
+      const responseHeaders = new Headers({
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "Content-Disposition": "attachment; filename=CERT.docx",
+      });
+
+      return new NextResponse(outputDocumentBuffer, {
         status: 200,
-        message: `"CERT written succesfully"`,
+        headers: responseHeaders,
       });
     } catch (error) {
       console.error(error);
       return NextResponse.json({
-        status: 200,
-        error: `Error: ${error}`,
+        status: 500,
+        error: `Error: ${error.message}`,
       });
     }
   } catch (error) {
     console.error(error);
     return NextResponse.json({
-      status: 200,
-      error: `Error: ${error.Error}`,
+      status: 500,
+      error: `Error: ${error.message}`,
     });
   }
 }

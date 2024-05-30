@@ -28,19 +28,19 @@ export const convertToDate = (int) => {
 
 export function dateSuffix(day) {
   let suffix;
-  const num = new Date(day).getDate()
+  const num = new Date(day).getDate();
   switch (true) {
-    case (num == 1 || num == 21 || num == 31):
-      suffix = 'st';
+    case num == 1 || num == 21 || num == 31:
+      suffix = "st";
       break;
-    case (num == 2 || num == 22):
-      suffix = 'nd';
+    case num == 2 || num == 22:
+      suffix = "nd";
       break;
-    case (num == 3 || num == 23):
-      suffix = 'rd';
+    case num == 3 || num == 23:
+      suffix = "rd";
       break;
     default:
-      suffix = 'th';
+      suffix = "th";
   }
 
   return `${num}${suffix}`;
@@ -48,36 +48,33 @@ export function dateSuffix(day) {
 
 export function suffix(day) {
   let suffix;
-  const num = parseInt(day)
+  const num = day.getDate();
   switch (true) {
-    case (num == 1 || num == 21 || num == 31):
-      suffix = 'st';
+    case num == 1 || num == 21 || num == 31:
+      suffix = "st";
       break;
-    case (num == 2 || num == 22):
-      suffix = 'nd';
+    case num == 2 || num == 22:
+      suffix = "nd";
       break;
-    case (num == 3 || num == 23):
-      suffix = 'rd';
+    case num == 3 || num == 23:
+      suffix = "rd";
       break;
     default:
-      suffix = 'th';
+      suffix = "th";
   }
 
   return `${suffix}`;
 }
 
 export function toTitleCase(str) {
-  return str.replace(/\b\w/g, function(char) {
+  return str.replace(/\b\w/g, function (char) {
     return char.toUpperCase();
   });
 }
 
-
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
 
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString("en-US", options);
 };
-
-
