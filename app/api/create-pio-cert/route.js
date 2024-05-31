@@ -24,6 +24,7 @@ export async function POST(request) {
       month: new Date(data.issueDate).toLocaleString("default", {
         month: "long",
       }),
+      projectType: data.contracts[0].contractID.substring(2,4).toUpperCase() == "EB" ? "projects" : "goods"
     };
     pioOutputDoc.setData(dataToAdd);
 
