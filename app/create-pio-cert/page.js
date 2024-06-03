@@ -4,6 +4,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import ContractTable from "../component/ContractTable";
+import Holidays from "date-holidays";
+import { isWeekend } from "date-fns";
 
 const CreatePIOCert = () => {
   const [inputArr, setInputArr] = useState([]);
@@ -13,6 +15,22 @@ const CreatePIOCert = () => {
     endDate: "",
     issueDate: "",
   });
+
+  const handleDate = (e) => {
+    const { name, value } = e.target;
+    const hd = new Holidays("PH");
+    const holiday = hd.isHoliday(value);
+    if (isWeekend(value)) {
+      errorToast("Dapat Lunes to Friday lang!");
+    } else if (holiday) {
+      errorToast(`Bawal dahil ${holiday[0].name}`);
+    } else {
+      setData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,7 +115,7 @@ const CreatePIOCert = () => {
             <input
               name="issueDate"
               value={data?.issueDate}
-              onChange={handleChange}
+              onChange={handleDate}
               className="custom-input w-60"
               type="date"
             ></input>

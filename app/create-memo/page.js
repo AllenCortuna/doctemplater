@@ -127,7 +127,7 @@ const Folder = () => {
             <input
               name="startDate"
               value={data?.startDate}
-              onChange={handleDate}
+              onChange={handleChange}
               className="custom-input w-60"
               type="date"
             ></input>
@@ -138,7 +138,7 @@ const Folder = () => {
             <input
               name="endDate"
               value={data?.endDate}
-              onChange={handleDate}
+              onChange={handleChange}
               className="custom-input w-60"
               type="date"
             ></input>
