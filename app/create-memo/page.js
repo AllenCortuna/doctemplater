@@ -27,10 +27,11 @@ const Folder = () => {
   const handleDate = (e) => {
     const { name, value } = e.target;
     const hd = new Holidays("PH");
+    const holiday = hd.isHoliday(value);
     if (isWeekend(value)) {
       errorToast("Dapat Lunes to Friday lang!");
-    } else if (hd.isHoliday(value)) {
-      errorToast("Bawal dahil Holiday!");
+    } else if (holiday) {
+      errorToast(`Bawal dahil ${holiday[0].name}`);
     } else {
       setData((prevData) => ({
         ...prevData,

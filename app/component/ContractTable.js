@@ -93,10 +93,10 @@ const ContractTable = ({inputArr, setInputArr}) => {
         <br />
       </span>
 
-      <div className="flex flex-col mx-auto">
+      <div className="flex flex-col mx-auto border border-zinc-300 rounded-lg mt-5">
         <table className="table table-zebra">
           <thead>
-            <tr>
+            <tr className="text-xs text-zinc-500">
               <th>Contract ID </th>
               <th>Project Name</th>
               <th>Options</th>
@@ -105,13 +105,13 @@ const ContractTable = ({inputArr, setInputArr}) => {
           <tbody>
             {inputArr.length < 1 ? (
               <tr>
-                <td colSpan={3} className="text-zinc-500">Please enter atleast One Contract ID and Project Name !</td>
+                <td colSpan={3} className="text-red-500 text-xs"> Please enter atleast One Contract ID and Project Name!</td>
               </tr>
             ) : (
               inputArr.map((info, ind) => (
                 <tr key={ind}>
-                  <td>{info.contractID}</td>
-                  <td>{info.projectName}</td>
+                  <td className="text-xs">{info.contractID}</td>
+                  <td className="text-xs text-zinc-600">{info.projectName}</td>
                   <td>
                     <button
                       onClick={() => handleDelete(ind)}

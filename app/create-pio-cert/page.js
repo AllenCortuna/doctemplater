@@ -107,7 +107,7 @@ const CreatePIOCert = () => {
       <ContractTable inputArr={inputArr} setInputArr={setInputArr} />
       <button
         type="submit"
-        className="btn btn-neutral text-xs mt-10 w-60 mx-auto"
+        className="btn btn-neutral text-xs mt-10 w-80 mx-auto"
         onClick={handleSubmit}
       >
         Download Certification
