@@ -4,6 +4,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import ContractTable from "../component/ContractTable";
+import Holidays from "date-holidays";
+import { isWeekend } from "date-fns";
 
 const Folder = () => {
   const [inputArr, setInputArr] = useState([]);
@@ -22,65 +24,84 @@ const Folder = () => {
     }));
   };
 
+  const handleDate = (e) => {
+    const { name, value } = e.target;
+    const hd = new Holidays("PH");
+    if (isWeekend(value)) {
+      errorToast("Dapat Lunes to Friday lang!");
+    } else if (hd.isHoliday(value)) {
+      errorToast("Bawal dahil Holiday!");
+    } else {
+      setData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      //MEMO
-      const memoResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-memo`,
-        { ...data, contracts: inputArr },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          responseType: "blob", // This is important for handling binary data
+      if (Object.values(data).some((value) => value === "") || !inputArr[0]) {
+        errorToast("Hindi kumpleto ang mga input fields");
+      } else {
+        //MEMO
+        const memoResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-memo`,
+          { ...data, contracts: inputArr },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            responseType: "blob", // This is important for handling binary data
+          }
+        );
+
+        if (memoResponse.status === 200) {
+          const blob = new Blob([memoResponse.data], {
+            type: memoResponse.headers["content-type"],
+          });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `MEMO ${inputArr
+            .slice(0, 5)
+            .map((item) => item.contractID)
+            .join(", ")} ${data.certType.toUpperCase()}.docx`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          successToast("MEMO downloaded successfully");
         }
-      );
 
-      if (memoResponse.status === 200) {
-        const blob = new Blob([memoResponse.data], {
-          type: memoResponse.headers["content-type"],
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `MEMO ${inputArr
-          .slice(0, 5)
-          .map((item) => item.contractID)
-          .join(", ")} ${data.certType.toUpperCase()}.docx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        successToast("MEMO downloaded successfully");
-      }
+        //MEMO
+        const certResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-cert`,
+          { ...data, contracts: inputArr },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            responseType: "blob", // This is important for handling binary data
+          }
+        );
 
-      //MEMO
-      const certResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-cert`,
-        { ...data, contracts: inputArr },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          responseType: "blob", // This is important for handling binary data
+        if (certResponse.status === 200) {
+          const blob = new Blob([certResponse.data], {
+            type: certResponse.headers["content-type"],
+          });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `CERT ${inputArr
+            .slice(0, 5)
+            .map((item) => item.contractID)
+            .join(", ")} ${data.certType.toUpperCase()}.docx`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          successToast("CERT downloaded successfully");
         }
-      );
-
-      if (certResponse.status === 200) {
-        const blob = new Blob([certResponse.data], {
-          type: certResponse.headers["content-type"],
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `CERT ${inputArr
-          .slice(0, 5)
-          .map((item) => item.contractID)
-          .join(", ")} ${data.certType.toUpperCase()}.docx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        successToast("CERT downloaded successfully");
       }
     } catch (error) {
       console.log("ERROR: ", error);
@@ -105,7 +126,7 @@ const Folder = () => {
             <input
               name="startDate"
               value={data?.startDate}
-              onChange={handleChange}
+              onChange={handleDate}
               className="custom-input w-60"
               type="date"
             ></input>
@@ -116,7 +137,7 @@ const Folder = () => {
             <input
               name="endDate"
               value={data?.endDate}
-              onChange={handleChange}
+              onChange={handleDate}
               className="custom-input w-60"
               type="date"
             ></input>
@@ -126,7 +147,7 @@ const Folder = () => {
             <input
               name="certDate"
               value={data?.certDate}
-              onChange={handleChange}
+              onChange={handleDate}
               className="custom-input w-60"
               type="date"
             ></input>
