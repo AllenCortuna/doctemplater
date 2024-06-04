@@ -8,6 +8,7 @@ import Holidays from "date-holidays";
 import { isWeekend } from "date-fns";
 
 const Folder = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [inputArr, setInputArr] = useState([]);
   const [data, setData] = useState({
     certType: "",
@@ -29,9 +30,9 @@ const Folder = () => {
     const hd = new Holidays("PH");
     const holiday = hd.isHoliday(value);
     if (isWeekend(value)) {
-      errorToast("Dapat Lunes to Friday lang!");
+      errorToast("Dapat Monday to Friday lang!");
     } else if (holiday) {
-      errorToast(`Bawal dahil ${holiday[0].name}`);
+      errorToast(`Bawal dahil ${holiday[0].name}!`);
     } else {
       setData((prevData) => ({
         ...prevData,
@@ -42,9 +43,10 @@ const Folder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       if (Object.values(data).some((value) => value === "") || !inputArr[0]) {
-        errorToast("Hindi kumpleto ang mga input fields");
+        errorToast("Hindi kumpleto ang mga input fields!");
       } else {
         //MEMO
         const memoResponse = await axios.post(
@@ -104,9 +106,11 @@ const Folder = () => {
           successToast("CERT downloaded successfully");
         }
       }
+      setIsLoading(false);
     } catch (error) {
       console.log("ERROR: ", error);
       errorToast(error);
+      setIsLoading(false);
     }
   };
 
@@ -158,10 +162,13 @@ const Folder = () => {
       <ContractTable inputArr={inputArr} setInputArr={setInputArr} />
       <button
         type="submit"
-        className="btn btn-neutral text-xs mt-10 w-60 mx-auto"
+        className={`btn ${
+          isLoading ? "btn-disable" : "btn-neutral"
+        } text-xs mt-10 w-60 mx-auto`}
         onClick={handleSubmit}
+        disabled={isLoading}
       >
-        Compile Cert and Memo
+        {isLoading ? "Loading..." : "Compile Cert and Memo"}
       </button>
     </div>
   );

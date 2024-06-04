@@ -45,24 +45,6 @@ const ContractTable = ({inputArr, setInputArr}) => {
     setInputArr(newdataArr);
   };
 
-  // Handle checking and storing data in the console
-  const handleLog = () => {
-    console.log("Object store in array", inputArr);
-
-    fetch("https://jsonplaceholder.typicode.com/users", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    }).then((resp) => {
-      resp.json().then((result) => {
-        console.log("result", result);
-      });
-    });
-  };
-
   return (
     <div className="flex justify-center flex-col gap-5 max-w-[60rem] mx-auto">
       <span className="gap-5 flex mx-auto mt-10">
@@ -115,7 +97,7 @@ const ContractTable = ({inputArr, setInputArr}) => {
                   <td>
                     <button
                       onClick={() => handleDelete(ind)}
-                      className="btn btn-error btn-sm btn-outline"
+                      className="btn btn-error btn-sm btn-outline text-xs"
                     >
                       Delete
                     </button>
@@ -126,12 +108,6 @@ const ContractTable = ({inputArr, setInputArr}) => {
           </tbody>
         </table>
       </div>
-      {/* <button
-        onClick={handleLog}
-        className="btn btn-sm btn-neutral text-xs w-60 mx-auto"
-      >
-        console.log()
-      </button> */}
     </div>
   );
 };
