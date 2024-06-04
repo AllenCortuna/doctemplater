@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import ContractTable from "../component/ContractTable";
 import Holidays from "date-holidays";
 import { isWeekend } from "date-fns";
+import CreatableSelect from "react-select/creatable";
 
 const Folder = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,12 +17,25 @@ const Folder = () => {
     endDate: "",
     certDate: "",
   });
+  const options = [
+    { value: "Invitation to Bid", label: "Invitation to Bid" },
+    { value: "Notice of Award", label: "Notice of Award" },
+    { value: "Notice to Proceed", label: "Notice to Proceed" },
+    { value: "Request for Quotation", label: "Request for Quotation" },
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleSelect = (selectedOption) => {
+    setData((prevData) => ({
+      ...prevData,
+      certType: selectedOption ? selectedOption.value : "",
     }));
   };
 
@@ -118,13 +132,14 @@ const Folder = () => {
     <div className="flex flex-col w-screen p-10 justify-center">
       <ToastContainer />
       <form className="flex flex-col gap-8 min-w-[60rem]  mx-auto">
-        <input
-          name="certType"
-          value={data?.certType}
-          onChange={handleChange}
-          className="custom-input w-[30rem]"
+        <CreatableSelect
+          value={options.find((option) => option.value === data.certType)}
+          onChange={handleSelect}
+          options={options}
+          isClearable
+          className={"text-xs bg-zinc-200 w-[30rem]"}
           placeholder="Type of Document"
-        ></input>
+        />
         <div className="flex gap-10">
           <span className="gap-2 flex flex-col">
             <p className="primary-text ml-1">Start Date: </p>

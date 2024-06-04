@@ -6,8 +6,10 @@ import { ToastContainer } from "react-toastify";
 import ContractTable from "../component/ContractTable";
 import Holidays from "date-holidays";
 import { isWeekend } from "date-fns";
+import CreatableSelect from "react-select/creatable";
 
 const CreatePIOCert = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [inputArr, setInputArr] = useState([]);
   const [data, setData] = useState({
     certType: "",
@@ -15,6 +17,27 @@ const CreatePIOCert = () => {
     endDate: "",
     issueDate: "",
   });
+  const options = [
+    { value: "Invitation to Bid", label: "Invitation to Bid" },
+    { value: "Notice of Award", label: "Notice of Award" },
+    { value: "Notice to Proceed", label: "Notice to Proceed" },
+    { value: "Request for Quotation", label: "Request for Quotation" },
+  ];
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSelect = (selectedOption) => {
+    setData((prevData) => ({
+      ...prevData,
+      certType: selectedOption ? selectedOption.value : "",
+    }));
+  };
 
   const handleDate = (e) => {
     const { name, value } = e.target;
@@ -32,16 +55,9 @@ const CreatePIOCert = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       //MEMO
       const certResponse = await axios.post(
@@ -71,9 +87,11 @@ const CreatePIOCert = () => {
         a.remove();
         successToast("Certification downloaded successfully");
       }
+      setIsLoading(false);
     } catch (error) {
       console.log("ERROR: ", error);
       errorToast(error);
+      setIsLoading(false);
     }
   };
 
@@ -81,13 +99,14 @@ const CreatePIOCert = () => {
     <div className="flex flex-col w-screen p-10 justify-center">
       <ToastContainer />
       <form className="flex flex-col gap-8 min-w-[60rem]  mx-auto">
-        <input
-          name="certType"
-          value={data?.certType}
-          onChange={handleChange}
-          className="custom-input w-[30rem]"
+        <CreatableSelect
+          value={options.find(option => option.value === data.certType)}
+          onChange={handleSelect}
+          options={options}
+          isClearable
+          className="text-xs bg-zinc-200 w-[30rem]"
           placeholder="Type of Document"
-        ></input>
+        />
         <div className="flex gap-10">
           <span className="gap-2 flex flex-col">
             <p className="primary-text ml-1">Start Date: </p>
@@ -125,10 +144,13 @@ const CreatePIOCert = () => {
       <ContractTable inputArr={inputArr} setInputArr={setInputArr} />
       <button
         type="submit"
-        className="btn btn-neutral text-xs mt-10 w-80 mx-auto"
+        className={`btn ${
+          isLoading ? "btn-disable" : "btn-neutral"
+        } text-xs mt-10 w-80 mx-auto`}
         onClick={handleSubmit}
+        disabled={isLoading}
       >
-        Download Certification
+        {isLoading ? "Loading..." : "Download Certification"}
       </button>
     </div>
   );

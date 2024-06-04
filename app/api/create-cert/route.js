@@ -19,6 +19,7 @@ export async function POST(request) {
     let certOutputDoc = new Docxtemplater(certZip);
 
     const dataToAdd = {
+      certType: data.certType,
       endDate: formatDate(data.endDate),
       day: dateSuffix(data.certDate),
       month: new Date(data.certDate).toLocaleString("default", {
