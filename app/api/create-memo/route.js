@@ -25,7 +25,6 @@ export async function POST(request) {
       endDate: formatDate(data.endDate),
       certTypeUpper: data.certType.toUpperCase(),
       table: data.contracts
-   
     };
     memoOutputDoc.setData(dataToAdd);
 

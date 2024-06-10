@@ -59,33 +59,36 @@ const CreatePIOCert = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      //MEMO
-      const certResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-pio-cert`,
-        { ...data, contracts: inputArr },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          responseType: "blob", // This is important for handling binary data
-        }
-      );
+      if (Object.values(data).some((value) => value === "") || !inputArr[0]) {
+        errorToast("Hindi kumpleto ang mga input fields!");
+      } else {
+        const certResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-pio-cert`,
+          { ...data, contracts: inputArr },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            responseType: "blob", // This is important for handling binary data
+          }
+        );
 
-      if (certResponse.status === 200) {
-        const blob = new Blob([certResponse.data], {
-          type: certResponse.headers["content-type"],
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${inputArr
-          .slice(0, 5)
-          .map((item) => item.contractID)
-          .join(", ")} ${data.certType.toUpperCase()}.docx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        successToast("Certification downloaded successfully");
+        if (certResponse.status === 200) {
+          const blob = new Blob([certResponse.data], {
+            type: certResponse.headers["content-type"],
+          });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${inputArr
+            .slice(0, 5)
+            .map((item) => item.contractID)
+            .join(", ")} ${data.certType.toUpperCase()}.docx`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          successToast("Certification downloaded successfully");
+        }
       }
       setIsLoading(false);
     } catch (error) {
@@ -100,7 +103,7 @@ const CreatePIOCert = () => {
       <ToastContainer />
       <form className="flex flex-col gap-8 min-w-[60rem]  mx-auto">
         <CreatableSelect
-          value={options.find(option => option.value === data.certType)}
+          value={options.find((option) => option.value === data.certType)}
           onChange={handleSelect}
           options={options}
           isClearable
