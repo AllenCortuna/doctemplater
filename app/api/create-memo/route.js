@@ -20,6 +20,7 @@ export async function POST(request) {
 
     const dataToAdd = {
       certType: data.certType,
+      memoDate: formatDate(data.memoDate),
       startDate: formatDate(data.startDate),
       endDate: formatDate(data.endDate),
       certTypeUpper: data.certType.toUpperCase(),

@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Navbar } from "./component/Navbar";
 import { Martian_Mono } from "next/font/google";
-const font = Martian_Mono({ subsets: ["latin"], weight: ["200","400","500","600", "700"] });
+const font = Martian_Mono ({ subsets: ["latin"], weight: ["200","400","500","600", "700"] });
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {

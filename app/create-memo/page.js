@@ -13,6 +13,7 @@ const Folder = () => {
   const [inputArr, setInputArr] = useState([]);
   const [data, setData] = useState({
     certType: "",
+    memoDate: "",
     startDate: "",
     endDate: "",
     certDate: "",
@@ -141,13 +142,25 @@ const Folder = () => {
           placeholder="Type of Document"
         />
         <div className="flex gap-10">
+
+        <span className="gap-2 flex flex-col">
+            <p className="primary-text ml-1">Memo Date: </p>
+            <input
+              name="memoDate"
+              value={data?.memoDate}
+              onChange={handleDate}
+              className="custom-input w-52"
+              type="date"
+            ></input>
+          </span>
+
           <span className="gap-2 flex flex-col">
             <p className="primary-text ml-1">Start Date: </p>
             <input
               name="startDate"
               value={data?.startDate}
               onChange={handleChange}
-              className="custom-input w-60"
+              className="custom-input w-52"
               type="date"
             ></input>
           </span>
@@ -158,7 +171,7 @@ const Folder = () => {
               name="endDate"
               value={data?.endDate}
               onChange={handleChange}
-              className="custom-input w-60"
+              className="custom-input w-52"
               type="date"
             ></input>
           </span>
@@ -168,7 +181,7 @@ const Folder = () => {
               name="certDate"
               value={data?.certDate}
               onChange={handleDate}
-              className="custom-input w-60"
+              className="custom-input w-52"
               type="date"
             ></input>
           </span>

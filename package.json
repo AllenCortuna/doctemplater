@@ -15,7 +15,7 @@
     "dexie": "^4.0.7",
     "dexie-react-hooks": "^1.1.7",
     "docxtemplater": "^3.47.4",
-    "next": "14.1.0",
+    "next": "^14.2.3",
     "pizzip": "^3.1.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
