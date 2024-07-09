@@ -16,7 +16,7 @@ export default function Home() {
         </button>
       </Link>
 
-      <Link href={"/create-3-strike"}>
+      <Link href={"/create-3strike"}>
         <button className="btn btn-outline rounded-md text-zinc-500 text-md">
           3 Strike Policy
         </button>

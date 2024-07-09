@@ -3,9 +3,6 @@ import { errorToast, successToast } from "@/config/toast";
 import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
-import ContractTable from "../component/ContractTable";
-import Holidays from "date-holidays";
-import { isWeekend } from "date-fns";
 import CreatableSelect from "react-select/creatable";
 import BidderTable from "../component/BidderTable";
 
@@ -36,20 +33,21 @@ const Create3Strike = () => {
   const handleSelect = (selectedOption) => {
     setData((prevData) => ({
       ...prevData,
-      certType: selectedOption ? selectedOption.value : "",
+      category: selectedOption ? selectedOption.value : "",
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log('data', data)
     try {
       if (Object.values(data).some((value) => value === "") || !inputArr[0]) {
         errorToast("Hindi kumpleto ang mga input fields!");
       } else {
         const certResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-pio-cert`,
-          { ...data, contracts: inputArr },
+          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-3strike`,
+          { ...data, bidders: inputArr },
           {
             headers: {
               "Content-Type": "application/json",
@@ -65,10 +63,7 @@ const Create3Strike = () => {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = `${inputArr
-            .slice(0, 5)
-            .map((item) => item.contractID)
-            .join(", ")} ${data.certType.toUpperCase()}.docx`;
+          a.download = `${data.contractID}.docx`;
           document.body.appendChild(a);
           a.click();
           a.remove();
@@ -107,7 +102,7 @@ const Create3Strike = () => {
         </div>
         <div className="flex gap-10">
           <CreatableSelect
-            value={options.find((option) => option.value === data.certType)}
+            value={options.find((option) => option.value === data.category)}
             onChange={handleSelect}
             options={options}
             isClearable
@@ -120,7 +115,7 @@ const Create3Strike = () => {
             onChange={handleChange}
             placeholder="Budget"
             className="custom-input w-48"
-            type="text"
+            type="number"
           ></input>
           <span className="tooltip" data-tip="Date of Report">
             <input

@@ -89,7 +89,7 @@ const BidderTable = ({ inputArr, setInputArr }) => {
           onClick={handleAdd}
           className="btn btn-sm border-2 rounded-full mx-auto btn-neutral text-xs w-32"
         >
-          Add
+          Submit
         </button>
         <br />
       </span>
@@ -98,17 +98,17 @@ const BidderTable = ({ inputArr, setInputArr }) => {
         <div className="flex flex-col gap-4  text-xs">
           {inputArr.length < 1 ? (
             <div className="text-red-500 card border border-zinc-300 rounded-lg p-4">
-              Please enter at least one Name, Address, Telephone Number, and
-              PhilReg!
+              Please enter at least one Bidder Name, Address, Telephone Number, and
+              PhilGEPs Registration NO!
             </div>
           ) : (
             inputArr.map((info, ind) => (
               <div
                 key={ind}
-                className="card border border-zinc-300 rounded-lg p-4"
+                className="card border border-zinc-300 rounded-lg p-4 w-full"
               >
-                <div className="text-xs">
-                  <strong>Name:</strong> {info.name}
+                <div className="text-xs text-zinc-600">
+                  <strong>Bidder Name:</strong> {info.name}
                 </div>
                 <div className="text-xs text-zinc-600">
                   <strong>Tel NO:</strong> {info.telNo}
