@@ -8,7 +8,7 @@ export const Navbar = () => {
       <div className="flex-1">
         <Link href={"/"} className={`text-md font-[600] text-zinc-600 flex gap-5`}>
           <Image src={dpwhLogo} alt="DPWH Logo.png"  width={40} height={40}/>
-          <p className="my-auto"><b className="text-orange-500">DPWH</b> MODEO Web App</p>
+          <p className="my-auto"><b>MODEO</b></p>
         </Link>
       </div>
       <div className="flex-none">

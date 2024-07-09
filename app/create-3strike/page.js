@@ -40,13 +40,14 @@ const Create3Strike = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log('data', data)
+    console.log("data", data);
     try {
       if (Object.values(data).some((value) => value === "") || !inputArr[0]) {
         errorToast("Hindi kumpleto ang mga input fields!");
       } else {
-        const certResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-3strike`,
+        //strike
+        const strikeResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-3strike/strike`,
           { ...data, bidders: inputArr },
           {
             headers: {
@@ -55,15 +56,38 @@ const Create3Strike = () => {
             responseType: "blob", // This is important for handling binary data
           }
         );
-
-        if (certResponse.status === 200) {
-          const blob = new Blob([certResponse.data], {
-            type: certResponse.headers["content-type"],
+        if (strikeResponse.status === 200) {
+          const blob = new Blob([strikeResponse.data], {
+            type: strikeResponse.headers["content-type"],
           });
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = `${data.contractID}.docx`;
+          a.download = `${data.contractID} STRIKE.docx`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          successToast("Certification downloaded successfully");
+        }
+        // transmittal
+        const transmittalResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-3strike/transmittal`,
+          { ...data, bidders: inputArr },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            responseType: "blob", // This is important for handling binary data
+          }
+        );
+        if (transmittalResponse.status === 200) {
+          const blob = new Blob([transmittalResponse.data], {
+            type: transmittalResponse.headers["content-type"],
+          });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${data.contractID} TRANSMITTAL.docx`;
           document.body.appendChild(a);
           a.click();
           a.remove();
@@ -129,16 +153,16 @@ const Create3Strike = () => {
         </div>
       </form>
       <BidderTable inputArr={inputArr} setInputArr={setInputArr} />
-        <button
-          type="submit"
-          className={`btn fixed bottom-10 left-1/2 transform -translate-x-1/2 ${
-            isLoading ? "btn-disable" : "btn-neutral"
-          } text-xs w-80`}
-          onClick={handleSubmit}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Download Documents"}
-        </button>
+      <button
+        type="submit"
+        className={`btn fixed bottom-10 left-1/2 transform -translate-x-1/2 ${
+          isLoading ? "btn-disable" : "btn-neutral"
+        } text-xs w-80`}
+        onClick={handleSubmit}
+        disabled={isLoading}
+      >
+        {isLoading ? "Loading..." : "Download Documents"}
+      </button>
     </div>
   );
 };

@@ -14,31 +14,27 @@ export async function POST(request) {
       process.cwd(),
       "public",
       "3-STRIKE",
-      "strike.docx"
+      "transmittal.docx"
     );
     console.log(`Template Path: ${templatePath}`);
-    const strikeTemplate = fs.readFileSync(templatePath, "binary");
-    const strikeZip = new PizZip(strikeTemplate);
-    let strikeOutputDoc = new Docxtemplater(strikeZip);
+    const transmittalTemplate = fs.readFileSync(templatePath, "binary");
+    const transmittalZip = new PizZip(transmittalTemplate);
+    let transmittalOutputDoc = new Docxtemplater(transmittalZip);
 
     // console.log('data :>> ', data);
     const dataToAdd = {
       ...data,
       budget: formatNumber(data.budget),
       date: formatDate(data.date),
-      bidders: data.bidders.map((item, index) => ({
-        ...item,
-        id: index + 1,
-      })) 
     };
     // console.log("dataToAdd: ",dataToAdd)
-    strikeOutputDoc.setData(dataToAdd);
+    transmittalOutputDoc.setData(dataToAdd);
 
     try {
       // Attempt to render the document (Add data to the template)
-      strikeOutputDoc.render();
+      transmittalOutputDoc.render();
       // Create a buffer to store the output data
-      let outputDocumentBuffer = strikeOutputDoc
+      let outputDocumentBuffer = transmittalOutputDoc
         .getZip()
         .generate({ type: "nodebuffer" });
 
@@ -46,7 +42,7 @@ export async function POST(request) {
       const responseHeaders = new Headers({
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment"`,
+        "Content-Disposition": `attachment`,
       });
 
       return new NextResponse(outputDocumentBuffer, {
