@@ -14,31 +14,33 @@ export async function POST(request) {
       process.cwd(),
       "public",
       "3-STRIKE",
-      "strike.docx"
+      "individual.docx"
     );
     console.log(`Template Path: ${templatePath}`);
-    const strikeTemplate = fs.readFileSync(templatePath, "binary");
-    const strikeZip = new PizZip(strikeTemplate);
-    let strikeOutputDoc = new Docxtemplater(strikeZip);
+    const individualTemplate = fs.readFileSync(templatePath, "binary");
+    const individualZip = new PizZip(individualTemplate);
+    let individualOutputDoc = new Docxtemplater(individualZip);
 
     // console.log('data :>> ', data);
+    let isGood = data.category == "Goods and Services";
     const dataToAdd = {
       ...data,
       budget: formatNumber(data.budget),
       date: formatDate(data.date),
-      bidders: data.bidders.map((item, index) => ({
-        ...item,
-        id: index + 1,
-      })) 
+      endUser: isGood ? "KATHERINE V. LADAGA" : "JOHNNY M. USI",
+      endID: isGood ? "12 G 0106" : "12 G 0100",
+      endDesignation: isGood
+        ? "End User for Goods"
+        : "End-user for Construction / Maintenance and Consultancy Projects",
     };
     // console.log("dataToAdd: ",dataToAdd)
-    strikeOutputDoc.setData(dataToAdd);
+    individualOutputDoc.setData(dataToAdd);
 
     try {
       // Attempt to render the document (Add data to the template)
-      strikeOutputDoc.render();
+      individualOutputDoc.render();
       // Create a buffer to store the output data
-      let outputDocumentBuffer = strikeOutputDoc
+      let outputDocumentBuffer = individualOutputDoc
         .getZip()
         .generate({ type: "nodebuffer" });
 

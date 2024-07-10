@@ -93,6 +93,33 @@ const Create3Strike = () => {
           a.remove();
           successToast("Certification downloaded successfully");
         }
+
+        // individual
+        for (const bidder of inputArr) {
+          const individualResponse = await axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-3strike/individual`,
+            { ...data, ...bidder }, // only pass the current bidder
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              responseType: "blob", // This is important for handling binary data
+            }
+          );
+          if (individualResponse.status === 200) {
+            const blob = new Blob([individualResponse.data], {
+              type: individualResponse.headers["content-type"],
+            });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${data.contractID} ${bidder.name} STRIKE FORM.docx`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            successToast(`${bidder.name}'s STRIKE FORM downloaded`);
+          }
+        }
       }
       setIsLoading(false);
     } catch (error) {

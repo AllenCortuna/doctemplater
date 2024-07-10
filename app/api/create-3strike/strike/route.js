@@ -22,6 +22,7 @@ export async function POST(request) {
     let strikeOutputDoc = new Docxtemplater(strikeZip);
 
     // console.log('data :>> ', data);
+    let isGood = data.category == "Goods and Services";
     const dataToAdd = {
       ...data,
       budget: formatNumber(data.budget),
@@ -29,7 +30,12 @@ export async function POST(request) {
       bidders: data.bidders.map((item, index) => ({
         ...item,
         id: index + 1,
-      })) 
+      })),
+      endUser: isGood ? "KATHERINE V. LADAGA" : "JOHNNY M. USI",
+      endID: isGood ? "12 G 0106" : "12 G 0100",
+      endDesignation: isGood
+        ? "End User for Goods"
+        : "End-user for Construction / Maintenance and Consultancy Projects",
     };
     // console.log("dataToAdd: ",dataToAdd)
     strikeOutputDoc.setData(dataToAdd);
