@@ -50,6 +50,28 @@ const DTR = () => {
         const jsonData = JSON.parse(cleanedText);
         console.log("jsonData", jsonData);
         setRecognizedJson(jsonData);
+
+        // POST REQUEST to API CREATE DTR here
+        const dtrResponse = await fetch("/api/dtr-generate", {
+          method: "POST",
+          body: JSON.stringify(jsonData),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!dtrResponse.ok) {
+          const errorData = await dtrResponse.json();
+          throw new Error(errorData.error || "Failed to create DTR");
+        }
+
+        // If successful, handle the download or any other success case
+        const blob = await dtrResponse.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "DTR.xlsx"; // Change filename if needed
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
       } catch (jsonError) {
         console.error("Error parsing JSON:", jsonError);
       }
@@ -74,7 +96,7 @@ const DTR = () => {
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-orange-500 text-white px-4 py-2 rounded"
         >
           Select Image
         </button>
