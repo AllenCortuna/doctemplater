@@ -4,7 +4,7 @@ import React from "react";
 import dpwhLogo from '../../public/dpwhLogo.png'
 export const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 px-20 bg-zinc-200">
+    <div className="navbar bg-base-200 border-b shadow px-4 md:px-10">
       <div className="flex-1">
         <Link href={"/"} className={`text-md font-[600] text-zinc-600 flex gap-5`}>
           <Image src={dpwhLogo} alt="DPWH Logo.png"  width={40} height={40}/>
@@ -12,21 +12,13 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal px-1 text-xs">
-          <li>
-            <details>
-              <summary className="border hover:border-zinc-700">Menu</summary>
-              <ul className="p-2 bg-base-100 rounded-t-none w-40 primary-text text-xs border border-zinc-300">
-                <li>
-                  <Link href={"/"}>Home</Link>
-                </li>
-                <li>
-                  <Link href={"/documentation"}>Documentation</Link>
-                </li>
-              </ul>
-            </details>
-          </li>
-        </ul>
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="">Menu</div>
+          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 p-2 mt-6 shadow">
+            <li><Link href={"/"}>Home</Link></li>
+            <li><Link href={"/documentation"}>Documentation</Link></li>
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ export async function POST(request) {
         ...item,
         id: index + 1,
       })),
-      endUser: isGood ? "KATHERINE V. LADAGA" : "JOHNNY M. USI",
+      endUser: isGood ? "KATHERINE V. LADAGA" : "EDISON M. SALAZAR",
       endID: isGood ? "12 G 0106" : "12 G 0100",
       endDesignation: isGood
         ? "End User for Goods"

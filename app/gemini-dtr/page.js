@@ -84,8 +84,8 @@ const DTR = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">DTR AI Automated</h1>
+    <div className="p-4 flex flex-col justify-center items-center">
+      <h1 className="text-xl font-bold mb-4 text-zinc-700">AI Automated DTR </h1>
       <div className="mb-4">
         <input
           type="file"
@@ -96,22 +96,22 @@ const DTR = () => {
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="bg-orange-500 text-white px-4 py-2 rounded"
+          className="btn btn-sm btn-primary text-white px-4 py-2 rounded"
         >
           Select Image
         </button>
       </div>
       {selectedImage && (
-        <div className="mb-4">
+        <div className="mb-4 flex flex-col items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={selectedImage}
             alt="Selected"
-            className="max-w-full h-auto"
+            className="max-w-full h-80"
           />
           <button
             onClick={handleUpload}
-            className="mt-2 bg-green-500 text-white px-4 py-2 rounded"
+            className="mt-2 btn btn-sm btn-primary text-white px-4 py-2 rounded"
             disabled={isProcessing}
           >
             {isProcessing ? "Processing..." : "Process Image"}
@@ -124,15 +124,15 @@ const DTR = () => {
           <p>{errorMessage}</p>
         </div>
       )}
-      {recognizedText && (
+      {/* {recognizedText && (
         <div className="mt-4 p-4 bg-gray-100 rounded">
           <h2 className="font-bold mb-2">Recognized Text:</h2>
           <pre>{recognizedText}</pre>
         </div>
-      )}
+      )} */}
       {recognizedJson && (
         <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h2 className="font-bold mb-2">Recognized JSON:</h2>
+          <h2 className="font-bold mb-2">Recognized TEXT:</h2>
           <pre>{JSON.stringify(recognizedJson, null, 2)}</pre>
         </div>
       )}

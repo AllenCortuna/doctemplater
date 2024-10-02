@@ -27,8 +27,8 @@ export async function POST(request) {
       ...data,
       budget: formatNumber(data.budget),
       date: formatDate(data.date),
-      endUser: isGood ? "KATHERINE V. LADAGA" : "JOHNNY M. USI",
-      endID: isGood ? "12 G 0106" : "12 G 0100",
+      endUser: isGood ? "KATHERINE V. LADAGA" : "EDISON M. SALAZAR",
+      endID: isGood ? "12 G 0106" : "",
       endDesignation: isGood
         ? "End User for Goods"
         : "End-user for Construction / Maintenance and Consultancy Projects",
