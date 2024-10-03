@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import axios from "axios";
 
 const DTR = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,23 +27,20 @@ const DTR = () => {
     setRecognizedText(null);
     setRecognizedJson(null);
     try {
-      const response = await fetch("/api/process-image", {
-        method: "POST",
-        body: JSON.stringify({ image: selectedImage }),
-        headers: { "Content-Type": "application/json" },
+      const response = await axios.post("/api/process-image", {
+        image: selectedImage,
       });
 
-      const data = await response.json();
-      console.log("data", data);
-      console.log("data.text:", data.text);
-      if (!response.ok) {
+      console.log("response", response);
+      const data = response.data;
+
+      if (response.status !== 200) {
         throw new Error(data.error || "Failed to process image");
       }
 
       setRecognizedText(data.text);
 
       try {
-        // Remove the ```json and ``` markers from the recognized text
         const cleanedText = data.text
           .replace(/```json\s+/, "")
           .replace(/```$/, "");
@@ -51,21 +49,17 @@ const DTR = () => {
         console.log("jsonData", jsonData);
         setRecognizedJson(jsonData);
 
-        // POST REQUEST to API CREATE DTR here
-        const dtrResponse = await fetch("/api/dtr-generate", {
-          method: "POST",
-          body: JSON.stringify(jsonData),
-          headers: { "Content-Type": "application/json" },
+        // POST REQUEST to API CREATE DTR
+        const dtrResponse = await axios.post("/api/dtr-generate", jsonData, {
+          responseType: "blob", // Important for downloading files
         });
 
-        if (!dtrResponse.ok) {
-          const errorData = await dtrResponse.json();
-          throw new Error(errorData.error || "Failed to create DTR");
+        if (dtrResponse.status !== 200) {
+          throw new Error("Failed to create DTR");
         }
 
-        // If successful, handle the download or any other success case
-        const blob = await dtrResponse.blob();
-        const url = window.URL.createObjectURL(blob);
+        // Handle file download
+        const url = window.URL.createObjectURL(dtrResponse.data);
         const a = document.createElement("a");
         a.href = url;
         a.download = "DTR.xlsx"; // Change filename if needed
@@ -85,7 +79,9 @@ const DTR = () => {
 
   return (
     <div className="p-4 flex flex-col justify-center items-center">
-      <h1 className="text-xl font-bold mb-4 text-zinc-700">AI Automated DTR </h1>
+      <h1 className="text-xl font-bold mb-4 text-zinc-700">
+        AI Automated DTR{" "}
+      </h1>
       <div className="mb-4">
         <input
           type="file"
@@ -103,12 +99,8 @@ const DTR = () => {
       </div>
       {selectedImage && (
         <div className="mb-4 flex flex-col items-center justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={selectedImage}
-            alt="Selected"
-            className="max-w-full h-80"
-          />
+           {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={selectedImage} alt="Selected" className="max-w-full h-80" />
           <button
             onClick={handleUpload}
             className="mt-2 btn btn-sm btn-primary text-white px-4 py-2 rounded"
@@ -124,12 +116,6 @@ const DTR = () => {
           <p>{errorMessage}</p>
         </div>
       )}
-      {/* {recognizedText && (
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h2 className="font-bold mb-2">Recognized Text:</h2>
-          <pre>{recognizedText}</pre>
-        </div>
-      )} */}
       {recognizedJson && (
         <div className="mt-4 p-4 bg-gray-100 rounded">
           <h2 className="font-bold mb-2">Recognized TEXT:</h2>
