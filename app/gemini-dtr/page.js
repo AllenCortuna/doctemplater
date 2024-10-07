@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import imageCompression from "browser-image-compression";
 
 const DTR = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -10,12 +11,29 @@ const DTR = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setSelectedImage(e.target?.result);
-      reader.readAsDataURL(file);
+      try {
+        // Options for compression
+        const options = {
+          maxSizeMB: 1, // Reduce to 1MB
+          maxWidthOrHeight: 1920, // Resize if needed
+          useWebWorker: true, // Use web workers for better performance
+        };
+
+        // Compress image
+        const compressedFile = await imageCompression(file, options);
+        const compressedImageUrl = URL.createObjectURL(compressedFile);
+
+        // Read and set compressed image
+        const reader = new FileReader();
+        reader.onload = (e) => setSelectedImage(e.target?.result);
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("Error compressing image:", error);
+        setErrorMessage("Failed to compress image");
+      }
     }
   };
 

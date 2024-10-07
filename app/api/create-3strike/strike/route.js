@@ -32,7 +32,7 @@ export async function POST(request) {
         id: index + 1,
       })),
       endUser: isGood ? "KATHERINE V. LADAGA" : "EDISON M. SALAZAR",
-      endID: isGood ? "12 G 0106" : "12 G 0100",
+      endID: isGood ? "12 G 0106" : "86 G 0033",
       endDesignation: isGood
         ? "End User for Goods"
         : "End-user for Construction / Maintenance and Consultancy Projects",
