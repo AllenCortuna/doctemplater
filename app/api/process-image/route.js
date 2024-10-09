@@ -45,7 +45,7 @@ export async function POST(req) {
       );
     }
 
-    const prompt = `extract the data here in this format:
+    const prompt = `Sample format of extracted data, (this a sample data extracted from an image):
                         {
                         name: "",
                         period: "",
@@ -58,7 +58,7 @@ export async function POST(req) {
 
                         sample data:
                         {
-                            "name": "CORTUNA, ALLEN LAWRENCE R.",
+                            "name": "DOE, JOHN REY C.",
                             "period": "September 2024",
                             "date": {
                                 "1": { "Arrival": "", "Departure": "", "Arrival (PM)": "", "Departure (PM)": "" },
@@ -93,6 +93,8 @@ export async function POST(req) {
                                 "30": { "Arrival": "7:56AM", "Departure": "12:06PM", "Arrival (PM)": "12:54PM", "Departure (PM)": "5:10PM" }
                             }
                             }
+
+                            Extract the data from the image
                         `;
     const imagePart = {
       inlineData: {
