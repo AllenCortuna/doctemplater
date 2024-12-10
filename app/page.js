@@ -39,6 +39,12 @@ export default function Home() {
           Create NTP
         </button>
       </Link>
+
+      <Link href={"/create-oblig"}>
+        <button className="btn btn-outline rounded-md text-zinc-500 text-md">
+          Create Obligation Jecelle
+        </button>
+      </Link>
     </div>
   );
 }
