@@ -50,6 +50,9 @@ dependencies:
   react-select:
     specifier: ^5.8.0
     version: 5.8.1(@types/react@18.3.10)(react-dom@18.3.1)(react@18.3.1)
+  react-to-print:
+    specifier: ^3.0.2
+    version: 3.0.2(react@18.3.1)
   react-toastify:
     specifier: ^10.0.5
     version: 10.0.5(react-dom@18.3.1)(react@18.3.1)
@@ -3291,6 +3294,14 @@ packages:
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
+    dev: false
+
+  /react-to-print@3.0.2(react@18.3.1):
+    resolution: {integrity: sha512-FS/Z4LLq0bgWaxd7obygFQ8yRFdKW74iE8fIVjFFsPJWIXmuL8CIO+4me1Hj44lrlxQ00gscSNb3BRM8olbwXg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ~19
+    dependencies:
+      react: 18.3.1
     dev: false
 
   /react-toastify@10.0.5(react-dom@18.3.1)(react@18.3.1):

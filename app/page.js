@@ -40,6 +40,12 @@ export default function Home() {
         </button>
       </Link>
 
+      <Link href={"/create-bonds"}>
+        <button className="btn btn-outline rounded-md text-zinc-500 text-md">
+          Create Bonds
+        </button>
+      </Link>
+
       <Link href={"/create-oblig"}>
         <button className="btn btn-outline rounded-md text-zinc-500 text-md">
           Create Obligation Jecelle
