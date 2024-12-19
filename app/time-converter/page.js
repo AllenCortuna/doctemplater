@@ -56,7 +56,7 @@ const TimeConverter = () => {
     try {
       const convertedHours = convertHours(hours);
       const convertedMinutes = convertMinutes(minutes);
-      const total = convertedHours + convertedMinutes;
+      const total = (convertedHours + convertedMinutes).toFixed(2);
       setResult(total.toString());
     } catch (error) {
       alert('Invalid Input');
