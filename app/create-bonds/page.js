@@ -25,52 +25,22 @@ const CreateBonds = () => {
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
-  //   console.log(
-  //     "process.env.BASE_URL :>> ",
-  //     process.env.NEXT_PUBLIC_BASE_API_URL
-  //   );
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/create-ntp`,
-  //       data,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         responseType: "blob", // This is important for handling binary data
-  //       }
-  //     );
-
-  //     if (response.status === 200) {
-  //       const blob = new Blob([response.data], {
-  //         type: response.headers["content-type"],
-  //       });
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement("a");
-  //       a.href = url;
-  //       a.download = `${data.contractID} NTP.docx`;
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       a.remove();
-  //       successToast("Document downloaded successfully");
-
-  //       // Reset form data
-  //       setData({
-  //         contractID: "",
-  //         projectName: "",
-  //         contractorName: "",
-  //         contractorAddress: "",
-  //         proprietor: "",
-  //         designation: "",
-  //       });
-  //     } else {
-  //       errorToast("Failed to download document");
-  //     }
-  //   } catch (error) {
-  //     console.log("ERROR: ", error);
-  //     errorToast(error.message);
+  //   if (
+  //     !contractID ||
+  //     !insuranceCompany ||
+  //     !dateValidated ||
+  //     !amount ||
+  //     !contractor ||
+  //     !projectNo ||
+  //     !projectName ||
+  //     !theWho
+  //   ) {
+  //     errorToast("Please fill out all the required fields");
+  //   } else {
+  //     // submit the form
   //   }
   // };
+
 
   return (
     <div className="flex w-screen p-20 justify-center">
@@ -129,6 +99,7 @@ const CreateBonds = () => {
             <span className="text-xs text-zinc-500 mb-2">Amount</span>
             <input
               name="amount"
+              type="number"
               value={data.amount}
               onChange={handleChange}
               className="custom-input"
