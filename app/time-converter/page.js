@@ -9,7 +9,7 @@ const TimeConverter = () => {
   const convertHours = (hours) => {
     const hoursNum = parseInt(hours);
     if (hoursNum >= 33) {
-      alert('Minimum of 4 Working Days');
+      alert('Maximum of 4 Working Days');
       return 0;
     }
     
