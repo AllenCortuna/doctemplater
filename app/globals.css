@@ -6,6 +6,13 @@
   box-sizing: border-box;
   /* border: 1px solid red; */
 }
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+  /* height: 4px; */
+}
+
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

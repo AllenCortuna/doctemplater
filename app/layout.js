@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${font.className}`}>
         <Navbar />
-        <main>
+        <main className="flex flex-col justify-center items-center overflow-x-hidden">
         {children}
         </main>
       </body>

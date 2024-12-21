@@ -41,7 +41,6 @@ const CreateBonds = () => {
   //   }
   // };
 
-
   return (
     <div className="flex w-screen p-20 justify-center">
       <ToastContainer />
@@ -58,6 +57,7 @@ const CreateBonds = () => {
               required
             />
           </label>
+
           <label className="flex flex-col col-span-3">
             <span className="text-xs text-zinc-500 mb-2">Project Name</span>
             <input
@@ -71,6 +71,17 @@ const CreateBonds = () => {
         </span>
 
         <div className="grid grid-cols-2 gap-8">
+          <label className="flex flex-col">
+            <span className="text-xs text-zinc-500 mb-2">Bond NO</span>
+            <input
+              name="projectNo"
+              value={data.projectNo}
+              onChange={handleChange}
+              className="custom-input"
+              required
+            />
+          </label>
+
           <label className="flex flex-col">
             <span className="text-xs text-zinc-500 mb-2">
               Insurance Company
@@ -115,17 +126,6 @@ const CreateBonds = () => {
               type="date"
               onChange={handleChange}
               className="custom-input tooltip-top"
-              required
-            />
-          </label>
-
-          <label className="flex flex-col">
-            <span className="text-xs text-zinc-500 mb-2">Project No</span>
-            <input
-              name="projectNo"
-              value={data.projectNo}
-              onChange={handleChange}
-              className="custom-input"
               required
             />
           </label>
