@@ -23,23 +23,7 @@ const CreateBonds = () => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (
-  //     !contractID ||
-  //     !insuranceCompany ||
-  //     !dateValidated ||
-  //     !amount ||
-  //     !contractor ||
-  //     !projectNo ||
-  //     !projectName ||
-  //     !theWho
-  //   ) {
-  //     errorToast("Please fill out all the required fields");
-  //   } else {
-  //     // submit the form
-  //   }
-  // };
+
 
   return (
     <div className="flex w-screen p-20 justify-center">

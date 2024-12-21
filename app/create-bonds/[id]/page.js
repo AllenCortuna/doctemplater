@@ -29,7 +29,7 @@ const BondDetails = () => {
 
   return (
     <div className="flex justify-center items-center w-screen h-full pt-10 overflow-x-hidden">
-      <div className="flex flex-col overflow-scroll overflow-x-hidden h-[calc(100vh-10rem)]">
+      <div className="flex flex-col overflow-scroll overflow-x-hidden h-[calc(100vh-5rem)]">
         <div
           id="printable"
           ref={contentRef}
