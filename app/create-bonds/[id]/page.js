@@ -20,6 +20,7 @@ const BondDetails = () => {
   const projectNo = searchParams.get("projectNo") || "";
   const projectName = searchParams.get("projectName") || "";
   const theWho = searchParams.get("theWho") || "";
+  const designation = searchParams.get("designation") || "";
 
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({
@@ -86,7 +87,7 @@ const BondDetails = () => {
                 {format(new Date(dateValidated), "MMMM dd, yyyy")}
               </span>
               , issued by <span className="font-semibold">{theWho}</span>,
-              AVP-Bonds of{" "}
+              {designation} of{" "}
               <span className="font-semibold">{insuranceCompany}</span>.
             </p>
             <p>

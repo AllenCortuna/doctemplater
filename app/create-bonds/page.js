@@ -13,6 +13,7 @@ const CreateBonds = () => {
     projectNo: "",
     projectName: "",
     theWho: "",
+    designation: "",
   });
 
   const handleChange = (e) => {
@@ -103,6 +104,17 @@ const CreateBonds = () => {
           </label>
 
           <label className="flex flex-col">
+            <span className="text-xs text-zinc-500 mb-2">The Who</span>
+            <input
+              name="theWho"
+              value={data.theWho}
+              onChange={handleChange}
+              className="custom-input"
+              required
+            />
+          </label>
+
+          <label className="flex flex-col">
             <span className="text-xs text-zinc-500 mb-2">Date Validated</span>
             <input
               name="dateValidated"
@@ -115,15 +127,17 @@ const CreateBonds = () => {
           </label>
 
           <label className="flex flex-col">
-            <span className="text-xs text-zinc-500 mb-2">The Who</span>
+            <span className="text-xs text-zinc-500 mb-2">Designation</span>
             <input
-              name="theWho"
-              value={data.theWho}
+              name="designation"
+              value={data.designation}
               onChange={handleChange}
               className="custom-input"
               required
             />
           </label>
+
+
         </div>
 
         <span className="mb-5 ml-auto mr-0 flex flex-row gap-10 justify-start ">
