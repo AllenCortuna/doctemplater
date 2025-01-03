@@ -14,6 +14,7 @@ const CreateBonds = () => {
     projectName: "",
     theWho: "",
     designation: "",
+    bondType: "",
   });
 
   const handleChange = (e) => {
@@ -137,6 +138,23 @@ const CreateBonds = () => {
             />
           </label>
 
+          <label className="flex flex-col">
+            <span className="text-xs text-zinc-500 mb-2">Designation</span>
+            <select
+              name="bondType"
+              value={data.bondType}
+              onChange={handleChange}
+              className="custom-input"
+              required
+            >
+              <option value="">Select Bond Type</option>
+              <option value="PERFORMANCE BOND">PERFORMANCE BOND</option>
+              <option value="CONTRACTOR'S ALL RISK POLICY">CONTRACTOR&apos;S ALL RISK POLICY</option>
+              <option value="ADVANCE PAYMENT BOND">ADVANCE PAYMENT BOND</option>
+              <option value="RETENTION BOND">RETENTION BOND</option>
+              <option value="WARRANTY BOND">WARRANTY BOND</option>
+            </select>
+          </label>
 
         </div>
 

@@ -21,6 +21,7 @@ const BondDetails = () => {
   const projectName = searchParams.get("projectName") || "";
   const theWho = searchParams.get("theWho") || "";
   const designation = searchParams.get("designation") || "";
+  const bondType = searchParams.get("bondType") || "";
 
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({
@@ -69,8 +70,8 @@ const BondDetails = () => {
           {/* Certification Body */}
           <div className="text-[15px] leading-relaxed text-justify">
             <p className="mb-4 indent-20">
-              THIS IS TO CERTIFY that{" "}
-              <span className="font-semibold">{projectNo}</span> issued by{" "}
+              THIS IS TO CERTIFY that{" "} 
+              <span className="font-semibold">{bondType}{" "}{projectNo}</span> issued by{" "}
               <span className="font-semibold">{insuranceCompany}</span> on{" "}
               <span className="font-semibold">
                 {format(new Date(dateValidated), "MMMM dd, yyyy")}
