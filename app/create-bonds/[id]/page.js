@@ -26,6 +26,7 @@ const BondDetails = () => {
   const reactToPrintFn = useReactToPrint({
     contentRef,
     documentTitle: `${contractID} ${projectNo} Bonds`,
+    size: [210, 297], // A4 size in mm
   });
 
   return (
@@ -43,13 +44,13 @@ const BondDetails = () => {
               alt="DPWH Logo"
               className="h-24 w-24 object-contain"
             />
-            <div className="text-[15px] text-gray-700">
+            <div className="text-[15px] text-black">
               <p>Republic of the Philippines</p>
               <p className="font-semibold">
                 DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
               </p>
-              <p>MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE</p>
-              <p className="italic">MIMAROPA REGION (IV-B)</p>
+              <p className="text-[12px]">MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE MIMAROPA REGION (IV-B)</p>
+              
             </div>
             <img
               src="/bagongPilipinas.png"
