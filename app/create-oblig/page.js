@@ -244,17 +244,16 @@ const CreateNOA = () => {
       </form>
 
 
-      <Link
+      {/* <Link
         href="/"
         className="ml-auto mr-0 flex flex-row gap-10 fixed bottom-10 left-10"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/dpwhLogo.png"
           alt="DPWH Logo"
           className="h-20 w-20 object-contain"
         />
-      </Link>
+      </Link> */}
 
 
       <span className="mb-5 ml-auto mr-0 flex flex-row gap-10 fixed bottom-10 right-10">
