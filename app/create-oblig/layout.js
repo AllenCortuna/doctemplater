@@ -1,5 +1,4 @@
-import "./globals.css";
-import { Navbar } from "./component/Navbar";
+import "../globals.css";
 import { Martian_Mono } from "next/font/google";
 const font = Martian_Mono ({ subsets: ["latin"], weight: ["200","400","500","600", "700"] });
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,11 +12,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${font.className}`}>
-        <Navbar />
-        <main className="flex flex-col justify-center items-center overflow-x-hidden">
+        <main>
         {children}
         </main>
-      </body>yu
+      </body>
     </html>
   );
 }
