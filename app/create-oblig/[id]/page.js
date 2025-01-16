@@ -2,7 +2,6 @@
 "use client";
 import { amountToWords } from "@/config/amountToWords";
 import { formatNumber } from "@/config/formatNumber";
-import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
@@ -10,19 +9,39 @@ import { useReactToPrint } from "react-to-print";
 const BondDetails = () => {
   const searchParams = useSearchParams();
 
-  // Extract query data from the URL
+  // First, calculate the raw values
+  const rawAmount = parseInt(searchParams.get("amount") || "0", 10);
+  const rawLabor = parseInt(searchParams.get("labor") || "0", 10);
+  const rawMaterial = parseInt(searchParams.get("material") || "0", 10);
+  const rawEquipment = parseInt(searchParams.get("equipment") || "0", 10);
+  
+  // Calculate the total raw cost
+  const rawTotal = parseFloat((rawAmount / (rawLabor + rawMaterial + rawEquipment)).toFixed(2));
+
+  // Now create the data object with all values
   const data = {
     fund: searchParams.get("fund") || "",
-    amount: searchParams.get("amount") || "",
+    amount: formatNumber(rawAmount),
+    amountWords: amountToWords(rawAmount.toString()),
     contractor: searchParams.get("contractor") || "",
     contractorAddress: searchParams.get("contractorAddress") || "",
     contractorTIN: searchParams.get("contractorTIN") || "",
     contractID: searchParams.get("contractID") || "",
     pmis: searchParams.get("pmis") || "",
     contractName: searchParams.get("contractName") || "",
-    labor: searchParams.get("labor") || "",
-    material: searchParams.get("material") || "",
-    equipment: searchParams.get("equipment") || "",
+
+    // Raw values
+    laborRaw: rawLabor,
+    materialRaw: rawMaterial,
+    equipmentRaw: rawEquipment,
+    rawTotal: rawTotal,
+
+    // Calculated values
+    labor: formatNumber(parseFloat((rawLabor * rawTotal).toFixed(2))),
+    material: formatNumber(parseFloat((rawMaterial * rawTotal).toFixed(2))),
+    equipment: formatNumber(parseFloat((rawEquipment * rawTotal).toFixed(2))),
+    total: formatNumber(rawAmount),
+
     saro: searchParams.get("saro") || "",
     sourceOfFund: searchParams.get("sourceOfFund") || "",
     uacs: searchParams.get("uacs") || "",
@@ -49,7 +68,6 @@ const BondDetails = () => {
         >
           {/* Header Section */}
           <div className="flex justify-between items-center mb-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/dpwhLogo.png"
               alt="DPWH Logo"
@@ -65,7 +83,6 @@ const BondDetails = () => {
                 (IV-B)
               </p>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/bagongPilipinas.png"
               alt="Bagong Pilipinas"
@@ -81,8 +98,8 @@ const BondDetails = () => {
                   <div className="col-span-4">FOR</div>
                   <div className="col-span-8">
                     <div>: The Budget Officer II</div>
-                    <div className="ml-4">Accounting Section</div>
-                    <div className="ml-4">This District</div>
+                    <div className="ml-2 ">Accounting Section</div>
+                    <div className="ml-2">This District</div>
                   </div>
                 </div>
 
@@ -91,7 +108,7 @@ const BondDetails = () => {
                   <div className="col-span-4">SUBJECT</div>
                   <div className="col-span-8">
                     <div>: Obligation Request</div>
-                    <div className="ml-4">
+                    <div className="ml-2">
                       This is to request for the issuance of an Obligation for
                       the following:
                     </div>
@@ -101,17 +118,15 @@ const BondDetails = () => {
                 {/* Fund Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
                   <div className="col-span-4">FUND</div>
-                  <div className="col-span-8">: 01101101</div>
+                  <div className="col-span-8">: {data.fund}</div>
                 </div>
 
                 {/* Amount Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
                   <div className="col-span-4">AMOUNT</div>
                   <div className="col-span-8">
-                    <div>: ₱ 485,002.23</div>
-                    <div className="ml-4">
-                      Four Hundred Eighty Five Thousand Two Pesos & 23/100
-                    </div>
+                    <div>: ₱ {data.amount}</div>
+                    <div className="ml-4">{data.amountWords}</div>
                   </div>
                 </div>
 
@@ -119,19 +134,15 @@ const BondDetails = () => {
                 <div className="grid grid-cols-12 gap-2 mb-4">
                   <div className="col-span-4">PAYEE</div>
                   <div className="col-span-8">
-                    <div>
-                      : KEJAMARENIK CONSTRUCTION & CONSTRUCTION SUPPLIES
-                    </div>
-                    <div className="ml-4">TIN: 752-752-00000</div>
+                    <div>: {data.contractor}</div>
+                    <div className="ml-2">Tin no: {data.contractorTIN}</div>
                   </div>
                 </div>
 
                 {/* Payee Address Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
                   <div className="col-span-4">PAYEE OFFICE/ADDRESS</div>
-                  <div className="col-span-8">
-                    : Doña Consuelo Subd. Upas Road San Jose, Occidental Mindoro
-                  </div>
+                  <div className="col-span-8">: {data.contractorAddress}</div>
                 </div>
 
                 {/* Particulars Section */}
@@ -139,32 +150,33 @@ const BondDetails = () => {
                   <div className="col-span-4">PARTICULARS</div>
                   <div className="col-span-8">
                     <div>
-                      : To obligate payment for 24EB0118-Repair/Maintenance of
-                      DPWH Building Mindoro
+                      <div className="flex gap-1">
+                        <span>:</span>
+                        <span>
+                          To obligate payment for <b>{data.contractID}</b>
+                          {"-"}
+                          {data.contractName}
+                        </span>
+                      </div>
                     </div>
-                    <div className="ml-4">
-                      Occidental District Engineering Office Multi-Purpose (GYM)
-                      DPWH Compound, Mamburao,
-                    </div>
-                    <div className="ml-4">Occidental Mindoro</div>
 
                     <div className="mt-4">
                       <div className="grid grid-cols-2 gap-2">
                         <div>Contract ID:</div>
-                        <div>24EB0118</div>
+                        <div>{data.contractID}</div>
                         <div>PMS ID:</div>
-                        <div></div>
+                        <div>{data.pmis}</div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 mt-4">
                         <div>Labor</div>
-                        <div className="text-right">245,714.06</div>
+                        <div className="text-right">{data.labor}</div>
                         <div>Materials</div>
-                        <div className="text-right">210,619.81</div>
+                        <div className="text-right">{data.material}</div>
                         <div>Equipment</div>
-                        <div className="text-right">28,668.36</div>
+                        <div className="text-right">{data.equipment}</div>
                         <div className="font-bold">TOTAL</div>
-                        <div className="text-right font-bold">485,002.23</div>
+                        <div className="text-right font-bold">{data.total}</div>
                       </div>
                     </div>
                   </div>
@@ -210,10 +222,10 @@ const BondDetails = () => {
                 </div>
 
                 {/* Signature */}
-                <div className="mt-16 mr-0 ml-auto border border-red-500 w-1/3 text-center">
-                  <div className="uppercase font-bold">GEORGE D. JUAN</div>
-                  <div>Chief, Maintenance Section</div>
-                  <div>Engineer III</div>
+                <div className="mt-16 mr-0 ml-auto w-1/3 text-center">
+                  <div className="uppercase font-bold">{data.endUser}</div>
+                  <div>{data.endUserTitle}</div>
+                  <div>{data.designation}</div>
                 </div>
               </div>
             </div>
