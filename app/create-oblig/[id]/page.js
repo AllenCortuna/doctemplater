@@ -10,15 +10,19 @@ const BondDetails = () => {
   const searchParams = useSearchParams();
 
   // First, calculate the raw values
-  const rawAmount = parseInt(searchParams.get("amount") || "0", 10);
-  const rawLabor = parseInt(searchParams.get("labor") || "0", 10);
-  const rawMaterial = parseInt(searchParams.get("material") || "0", 10);
-  const rawEquipment = parseInt(searchParams.get("equipment") || "0", 10);
+  const rawAmount = parseFloat(searchParams.get("amount") || "0");
+  const rawLabor = parseFloat(searchParams.get("labor") || "0");
+  const rawMaterial = parseFloat(searchParams.get("material") || "0");
+  const rawEquipment = parseFloat(searchParams.get("equipment") || "0");
   
-  // Calculate the total raw cost
-  const rawTotal = parseFloat((rawAmount / (rawLabor + rawMaterial + rawEquipment)).toFixed(2));
-
-  // Now create the data object with all values
+  // Calculate the total raw cost using the formula
+  const totalPercentages = rawLabor + rawMaterial + rawEquipment;
+  
+  // Calculated individual values
+  const calculatedLabor = (rawAmount / totalPercentages) * rawLabor;
+  const calculatedMaterial = (rawAmount / totalPercentages) * rawMaterial;
+  const calculatedEquipment = (rawAmount / totalPercentages) * rawEquipment;
+  
   const data = {
     fund: searchParams.get("fund") || "",
     amount: formatNumber(rawAmount),
@@ -29,19 +33,13 @@ const BondDetails = () => {
     contractID: searchParams.get("contractID") || "",
     pmis: searchParams.get("pmis") || "",
     contractName: searchParams.get("contractName") || "",
-
-    // Raw values
-    laborRaw: rawLabor,
-    materialRaw: rawMaterial,
-    equipmentRaw: rawEquipment,
-    rawTotal: rawTotal,
-
+  
     // Calculated values
-    labor: formatNumber(parseFloat((rawLabor * rawTotal).toFixed(2))),
-    material: formatNumber(parseFloat((rawMaterial * rawTotal).toFixed(2))),
-    equipment: formatNumber(parseFloat((rawEquipment * rawTotal).toFixed(2))),
+    labor: formatNumber(calculatedLabor.toFixed(2)),
+    material: formatNumber(calculatedMaterial.toFixed(2)),
+    equipment: formatNumber(calculatedEquipment.toFixed(2)),
     total: formatNumber(rawAmount),
-
+  
     saro: searchParams.get("saro") || "",
     sourceOfFund: searchParams.get("sourceOfFund") || "",
     uacs: searchParams.get("uacs") || "",
@@ -50,7 +48,6 @@ const BondDetails = () => {
     designation: searchParams.get("designation") || "",
     endUserTitle: searchParams.get("endUserTitle") || "",
   };
-
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({
     contentRef,
@@ -79,8 +76,13 @@ const BondDetails = () => {
                 DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
               </p>
               <p className="text-[12px]">
-                MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE MIMAROPA REGION
-                (IV-B)
+                MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE
+              </p>
+              <p className="text-[12px]">
+                MIMAROPA REGION(IV-B)
+              </p>
+              <p className="text-[12px]">
+                Mamburao, Occidental Mindoro
               </p>
             </div>
             <img
@@ -161,22 +163,22 @@ const BondDetails = () => {
                     </div>
 
                     <div className="mt-4">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>Contract ID:</div>
-                        <div>{data.contractID}</div>
+                      <div className="grid grid-cols-2 gap-2 mr-40">
+                        <div className="">Contract ID:</div>
+                        <div className="text-right border-b border-black ">{data.contractID}</div>
                         <div>PMS ID:</div>
-                        <div>{data.pmis}</div>
+                        <div className="text-right border-b border-black ">{data.pmis}</div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 mt-4">
+                      <div className="grid grid-cols-2 gap-2 mt-4 mr-40">
                         <div>Labor</div>
                         <div className="text-right">{data.labor}</div>
                         <div>Materials</div>
                         <div className="text-right">{data.material}</div>
                         <div>Equipment</div>
-                        <div className="text-right">{data.equipment}</div>
+                        <div className="text-right border-b border-black ">{data.equipment}</div>
                         <div className="font-bold">TOTAL</div>
-                        <div className="text-right font-bold">{data.total}</div>
+                        <div className="text-right font-bold ">{data.total}</div>
                       </div>
                     </div>
                   </div>

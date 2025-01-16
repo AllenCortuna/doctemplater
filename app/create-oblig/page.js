@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 const CreateNOA = () => {
@@ -26,12 +26,12 @@ const CreateNOA = () => {
   });
 
   // Load data from local storage on component mount
-  // useEffect(() => {
-  //   const savedData = localStorage.getItem('formData');
-  //   if (savedData) {
-  //     setData(JSON.parse(savedData));
-  //   }
-  // }, []);
+  useEffect(() => {
+    const savedData = localStorage.getItem('formData');
+    if (savedData) {
+      setData(JSON.parse(savedData));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +41,7 @@ const CreateNOA = () => {
     };
 
     // Save to local storage whenever input changes
-    // localStorage.setItem('formData', JSON.stringify(newData));
+    localStorage.setItem('formData', JSON.stringify(newData));
 
     setData(newData);
   };
