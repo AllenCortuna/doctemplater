@@ -2,6 +2,7 @@
 "use client";
 import { amountToWords } from "@/config/amountToWords";
 import { formatNumber } from "@/config/formatNumber";
+import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
@@ -14,17 +15,20 @@ const BondDetails = () => {
   const rawLabor = parseFloat(searchParams.get("labor") || "0");
   const rawMaterial = parseFloat(searchParams.get("material") || "0");
   const rawEquipment = parseFloat(searchParams.get("equipment") || "0");
-  
+
   // Calculate the total raw cost using the formula
   const totalPercentages = rawLabor + rawMaterial + rawEquipment;
-  
+
   // Calculated individual values
   const calculatedLabor = (rawAmount / totalPercentages) * rawLabor;
   const calculatedMaterial = (rawAmount / totalPercentages) * rawMaterial;
   const calculatedEquipment = (rawAmount / totalPercentages) * rawEquipment;
-  
+
   const data = {
     fund: searchParams.get("fund") || "",
+    date: searchParams.get("date")
+      ? format(new Date(searchParams.get("date")), "MMMM d, yyyy")
+      : "",
     amount: formatNumber(rawAmount),
     amountWords: amountToWords(rawAmount.toString()),
     contractor: searchParams.get("contractor") || "",
@@ -33,13 +37,13 @@ const BondDetails = () => {
     contractID: searchParams.get("contractID") || "",
     pmis: searchParams.get("pmis") || "",
     contractName: searchParams.get("contractName") || "",
-  
+
     // Calculated values
     labor: formatNumber(calculatedLabor.toFixed(2)),
     material: formatNumber(calculatedMaterial.toFixed(2)),
     equipment: formatNumber(calculatedEquipment.toFixed(2)),
     total: formatNumber(rawAmount),
-  
+
     saro: searchParams.get("saro") || "",
     sourceOfFund: searchParams.get("sourceOfFund") || "",
     uacs: searchParams.get("uacs") || "",
@@ -70,7 +74,7 @@ const BondDetails = () => {
               alt="DPWH Logo"
               className="h-24 w-24 object-contain"
             />
-            <div className="text-[15px] text-black">
+            <div className="text-[14px] text-black">
               <p>Republic of the Philippines</p>
               <p className="font-semibold">
                 DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
@@ -78,12 +82,8 @@ const BondDetails = () => {
               <p className="text-[12px]">
                 MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE
               </p>
-              <p className="text-[12px]">
-                MIMAROPA REGION(IV-B)
-              </p>
-              <p className="text-[12px]">
-                Mamburao, Occidental Mindoro
-              </p>
+              <p className="text-[12px]">MIMAROPA REGION(IV-B)</p>
+              <p className="text-[12px]">Mamburao, Occidental Mindoro</p>
             </div>
             <img
               src="/bagongPilipinas.png"
@@ -92,12 +92,22 @@ const BondDetails = () => {
             />
           </div>
 
-          <div className="p-8 max-w-4xl mx-auto text-left">
+          <div className="flex flex-col-reverse mb-4 text-[12px]">
+            <p className=" text-black border-b border-black w-40 mr-0 ml-auto font-bold">
+              {data.date}
+            </p>
+          </div>
+
+          <div className="flex flex-col-reverse mb-4 text-[12px]">
+            <b className="text-black ml-0 mr-auto">MEMORANDUM</b>
+          </div>
+
+          <div className="p-1 max-w-4xl mx-auto text-left">
             <div className="space-y-6">
               <div className="text-[11px]">
                 {/* For Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">FOR</div>
+                  <div className="col-span-4 font-bold">FOR</div>
                   <div className="col-span-8">
                     <div>: The Budget Officer II</div>
                     <div className="ml-2 ">Accounting Section</div>
@@ -107,7 +117,7 @@ const BondDetails = () => {
 
                 {/* Subject Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">SUBJECT</div>
+                  <div className="col-span-4  font-bold">SUBJECT</div>
                   <div className="col-span-8">
                     <div>: Obligation Request</div>
                     <div className="ml-2">
@@ -119,55 +129,68 @@ const BondDetails = () => {
 
                 {/* Fund Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">FUND</div>
+                  <div className="col-span-4 font-bold">FUND</div>
                   <div className="col-span-8">: {data.fund}</div>
                 </div>
 
                 {/* Amount Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">AMOUNT</div>
+                  <div className="col-span-4 font-bold">AMOUNT</div>
                   <div className="col-span-8">
-                    <div>: ₱ {data.amount}</div>
+                    <div className="font-bold">
+                      : <span className="ml-2 mr-10">₱</span> {data.amount}
+                    </div>
                     <div className="ml-4">{data.amountWords}</div>
                   </div>
                 </div>
 
                 {/* Payee Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">PAYEE</div>
+                  <div className="col-span-4 font-bold">PAYEE</div>
                   <div className="col-span-8">
-                    <div>: {data.contractor}</div>
+                    <div>
+                      : <b>{data.contractor}</b>
+                    </div>
                     <div className="ml-2">Tin no: {data.contractorTIN}</div>
                   </div>
                 </div>
 
                 {/* Payee Address Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">PAYEE OFFICE/ADDRESS</div>
+                  <div className="col-span-4 font-bold">
+                    PAYEE OFFICE/ADDRESS
+                  </div>
                   <div className="col-span-8">: {data.contractorAddress}</div>
                 </div>
 
                 {/* Particulars Section */}
                 <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">PARTICULARS</div>
+                  <div className="col-span-4 font-bold">PARTICULARS</div>
                   <div className="col-span-8">
                     <div>
                       <div className="flex gap-1">
                         <span>:</span>
                         <span>
-                          To obligate payment for <b>{data.contractID}</b>
-                          {"-"}
-                          {data.contractName}
+                          To obligate payment for{" "}
+                          <b>
+                            {data.contractID}
+                            {"-"}
+                            {data.contractName}
+                          </b>
                         </span>
                       </div>
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 ml-2">
                       <div className="grid grid-cols-2 gap-2 mr-40">
                         <div className="">Contract ID:</div>
-                        <div className="text-right border-b border-black ">{data.contractID}</div>
+                        <div className="text-right border-b border-black ">
+                          {data.contractID}
+                        </div>
                         <div>PMS ID:</div>
-                        <div className="text-right border-b border-black ">{data.pmis}</div>
+                        <div className="text-right border-b border-black ">
+                          {data.pmis}
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 mt-4 mr-40">
@@ -176,42 +199,46 @@ const BondDetails = () => {
                         <div>Materials</div>
                         <div className="text-right">{data.material}</div>
                         <div>Equipment</div>
-                        <div className="text-right border-b border-black ">{data.equipment}</div>
+                        <div className="text-right border-b border-black ">
+                          {data.equipment}
+                        </div>
                         <div className="font-bold">TOTAL</div>
-                        <div className="text-right font-bold ">{data.total}</div>
+                        <div className="text-right font-bold">{data.total}</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* SARO Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">SARO/SUB-ALLOTMENT NO.:</div>
-                  <div className="col-span-8">SR2024-02-011588</div>
+                <div className="grid grid-cols-12 gap-2 mb-1">
+                  <div className="col-span-4 font-bold">
+                    SARO/SUB-ALLOTMENT NO.:
+                  </div>
+                  <div className="col-span-8">{data.saro}</div>
                 </div>
 
                 {/* Source of Fund Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">SOURCE OF FUND</div>
-                  <div className="col-span-8">
-                    : FY 2024 RA 11975 REGULAR 2024 CURRENT
-                  </div>
+                <div className="grid grid-cols-12 gap-2 mb-1">
+                  <div className="col-span-4 font-bold">SOURCE OF FUND</div>
+                  <div className="col-span-8">: {data.sourceOfFund}</div>
                 </div>
 
                 {/* UACS Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">UACS No.</div>
-                  <div className="col-span-8">: 20000010019000</div>
+                <div className="grid grid-cols-12 gap-2 mb-1">
+                  <div className="col-span-4 font-bold">UACS No.</div>
+                  <div className="col-span-8">: {data.uacs}</div>
                 </div>
 
                 {/* Fiscal Year Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4">FISCAL YEAR OF ALLOTMENT</div>
-                  <div className="col-span-8">: FY 2024</div>
+                <div className="grid grid-cols-12 gap-2 mb-1">
+                  <div className="col-span-4 font-bold">
+                    FISCAL YEAR OF ALLOTMENT
+                  </div>
+                  <div className="col-span-8">: FY {data.year}</div>
                 </div>
 
                 {/* Certification */}
-                <div className="mt-8 space-y-2">
+                <div className="mt-8">
                   <p>
                     I certify that charges to appropriate/allotment are
                     necessary, lawful and under my direct supervision.

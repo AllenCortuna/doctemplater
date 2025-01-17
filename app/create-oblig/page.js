@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 const CreateNOA = () => {
   const [data, setData] = useState({
     fund: "",
+    date: "",
     amount: "",
     contractor: "",
     contractorAddress: "",
@@ -52,6 +53,7 @@ const CreateNOA = () => {
       <form className="justify-center my-auto flex flex-col gap-8 w-auto rounded-none shadow-sm p-10 min-w-[65rem] bg-zinc-50">
         {/* AWARD */}
         <span className="grid grid-cols-4 gap-8">
+
           <label className="flex flex-col text-xs">
             <span className="text-xs text-zinc-500 mb-2">Fund</span>
             <input
@@ -61,6 +63,18 @@ const CreateNOA = () => {
               className="custom-input"
             />
           </label>
+
+          <label className="flex flex-col text-xs">
+            <span className="text-xs text-zinc-500 mb-2">Date</span>
+            <input
+              name="date"
+              value={data.date}
+              onChange={handleChange}
+              type="date"
+              className="custom-input"
+            />
+          </label>
+
           <label className="flex flex-col text-xs">
             <span className="text-xs text-zinc-500 mb-2">Amount</span>
             <input
@@ -73,7 +87,7 @@ const CreateNOA = () => {
           </label>
 
           <label className="flex flex-col text-xs">
-            <span className="text-xs text-zinc-500 mb-2">PMIS</span>
+            <span className="text-xs text-zinc-500 mb-2">PMS ID</span>
             <input
               name="pmis"
               value={data.pmis}
