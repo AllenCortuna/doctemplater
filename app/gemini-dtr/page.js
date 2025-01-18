@@ -96,51 +96,61 @@ const DTR = () => {
   };
 
   return (
-    <div className="p-4 flex flex-col justify-center items-center">
-      <h1 className="text-xl font-bold mb-4 text-zinc-700">
-        AI Automated DTR{" "}
-      </h1>
-      <div className="mb-4">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-          ref={fileInputRef}
-        />
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="btn btn-sm btn-primary text-white px-4 py-2 rounded"
-        >
-          Select Image
-        </button>
-      </div>
-      {selectedImage && (
-        <div className="mb-4 flex flex-col items-center justify-center">
-           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={selectedImage} alt="Selected" className="max-w-full h-80" />
-          <button
-            onClick={handleUpload}
-            className="mt-2 btn btn-sm btn-primary text-white px-4 py-2 rounded"
-            disabled={isProcessing}
-          >
-            {isProcessing ? "Processing..." : "Process Image"}
-          </button>
-        </div>
-      )}
-      {errorMessage && (
-        <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
-          <h2 className="font-bold mb-2">Error:</h2>
-          <p>{errorMessage}</p>
-        </div>
-      )}
-      {recognizedJson && (
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h2 className="font-bold mb-2">Recognized TEXT:</h2>
-          <pre>{JSON.stringify(recognizedJson, null, 2)}</pre>
-        </div>
-      )}
+<div className="p-6 flex flex-col justify-center items-center rounded-lg mt-10">
+  <h1 className="font-bold text-sm p-2 border-2 border-dashed rounded-lg border-zinc-600 text-zinc-600 mb-6">AI Automated DTR</h1>
+
+  <div className="mb-6">
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="hidden"
+      ref={fileInputRef}
+    />
+    <button
+      onClick={() => fileInputRef.current?.click()}
+      className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md hover:opacity-90 transition-all"
+    >
+      Select Image
+    </button>
+  </div>
+
+  {selectedImage && (
+    <div className="mb-6 flex flex-col items-center justify-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={selectedImage} alt="Selected" className="max-w-full h-80 rounded-xl shadow-lg" />
+      <button
+        onClick={handleUpload}
+        className="mt-4 bg-gradient-to-r from-green-400 to-teal-500 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md hover:opacity-90 transition-all"
+        disabled={isProcessing}
+      >
+        {isProcessing ? (
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-4 h-4 border-4 border-t-4 border-t-white rounded-full animate-spin"></div>
+            <span>Processing...</span>
+          </div>
+        ) : (
+          "Process Image"
+        )}
+      </button>
     </div>
+  )}
+
+  {errorMessage && (
+    <div className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg shadow-md max-w-md w-full">
+      <h2 className="font-bold text-lg mb-2">Error:</h2>
+      <p>{errorMessage}</p>
+    </div>
+  )}
+
+  {recognizedJson && (
+    <div className="mt-6 p-4 bg-gray-100 text-gray-800 rounded-lg shadow-md max-w-md w-full">
+      <h2 className="font-bold text-lg mb-2">Recognized TEXT:</h2>
+      <pre className="whitespace-pre-wrap break-words">{JSON.stringify(recognizedJson, null, 2)}</pre>
+    </div>
+  )}
+</div>
+
   );
 };
 

@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <main className="flex flex-col justify-center items-center overflow-x-hidden">
         {children}
         </main>
-      </body>yu
+      </body>
     </html>
   );
 }
