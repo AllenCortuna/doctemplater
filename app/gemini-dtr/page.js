@@ -9,31 +9,54 @@ const DTR = () => {
   const [recognizedJson, setRecognizedJson] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      await processFile(file);
+    }
+  };
 
   const handleFileChange = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
-      try {
-        // Options for compression
-        const options = {
-          maxSizeMB: 1, // Reduce to 1MB
-          maxWidthOrHeight: 1920, // Resize if needed
-          useWebWorker: true, // Use web workers for better performance
-        };
+      await processFile(file);
+    }
+  };
 
-        // Compress image
-        const compressedFile = await imageCompression(file, options);
-        const compressedImageUrl = URL.createObjectURL(compressedFile);
+  const processFile = async (file) => {
+    try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
 
-        // Read and set compressed image
-        const reader = new FileReader();
-        reader.onload = (e) => setSelectedImage(e.target?.result);
-        reader.readAsDataURL(compressedFile);
-      } catch (error) {
-        console.error("Error compressing image:", error);
-        setErrorMessage("Failed to compress image");
-      }
+      const compressedFile = await imageCompression(file, options);
+      const compressedImageUrl = URL.createObjectURL(compressedFile);
+
+      const reader = new FileReader();
+      reader.onload = (e) => setSelectedImage(e.target?.result);
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("Error compressing image:", error);
+      setErrorMessage("Failed to compress image");
     }
   };
 
@@ -96,61 +119,86 @@ const DTR = () => {
   };
 
   return (
-<div className="p-6 flex flex-col justify-center items-center rounded-lg mt-10">
-  <h1 className="font-bold text-sm p-2 border-2 border-dashed rounded-lg border-zinc-600 text-zinc-600 mb-6">AI Automated DTR</h1>
+    <div className="max-w-4xl mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-8">Upload or Scan DTR</h1>
 
-  <div className="mb-6">
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleFileChange}
-      className="hidden"
-      ref={fileInputRef}
-    />
-    <button
-      onClick={() => fileInputRef.current?.click()}
-      className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md hover:opacity-90 transition-all"
-    >
-      Select Image
-    </button>
-  </div>
-
-  {selectedImage && (
-    <div className="mb-6 flex flex-col items-center justify-center">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={selectedImage} alt="Selected" className="max-w-full h-80 rounded-xl shadow-lg" />
-      <button
-        onClick={handleUpload}
-        className="mt-4 bg-gradient-to-r from-green-400 to-teal-500 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md hover:opacity-90 transition-all"
-        disabled={isProcessing}
+      <div 
+        className={`relative border-2 border-dashed rounded-lg p-8 ${
+          dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+        }`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
       >
-        {isProcessing ? (
-          <div className="flex items-center justify-center space-x-2">
-            <div className="w-4 h-4 border-4 border-t-4 border-t-white rounded-full animate-spin"></div>
-            <span>Processing...</span>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+          ref={fileInputRef}
+        />
+        
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+            </svg>
           </div>
-        ) : (
-          "Process Image"
-        )}
-      </button>
-    </div>
-  )}
+          <div className="text-center">
+            <p className="text-lg text-gray-600">Drag & drop or click to choose files</p>
+            <p className="text-sm text-gray-500 mt-2">Max file size: 10 MB</p>
+          </div>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Select File
+          </button>
+        </div>
+      </div>
 
-  {errorMessage && (
-    <div className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg shadow-md max-w-md w-full">
-      <h2 className="font-bold text-lg mb-2">Error:</h2>
-      <p>{errorMessage}</p>
-    </div>
-  )}
+      {selectedImage && (
+        <div className="mt-8">
+          <div className="flex items-center justify-between p-4 bg-white border rounded-lg">
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium">Selected Image</p>
+                <p className="text-sm text-gray-500">Click Process to continue</p>
+              </div>
+            </div>
+            <button
+              onClick={handleUpload}
+              disabled={isProcessing}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+            >
+              {isProcessing ? "Processing..." : "Process Image"}
+            </button>
+          </div>
+        </div>
+      )}
 
-  {recognizedJson && (
-    <div className="mt-6 p-4 bg-gray-100 text-gray-800 rounded-lg shadow-md max-w-md w-full">
-      <h2 className="font-bold text-lg mb-2">Recognized TEXT:</h2>
-      <pre className="whitespace-pre-wrap break-words">{JSON.stringify(recognizedJson, null, 2)}</pre>
-    </div>
-  )}
-</div>
+      {errorMessage && (
+        <div className="mt-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+          <h2 className="font-bold text-lg mb-2">Error:</h2>
+          <p>{errorMessage}</p>
+        </div>
+      )}
 
+      {recognizedJson && (
+        <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h2 className="font-bold text-lg mb-2">Recognized Text:</h2>
+          <pre className="whitespace-pre-wrap break-words bg-white p-4 rounded-md">
+            {JSON.stringify(recognizedJson, null, 2)}
+          </pre>
+        </div>
+      )}
+    </div>
   );
 };
 
