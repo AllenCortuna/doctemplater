@@ -92,13 +92,13 @@ const BondDetails = () => {
             />
           </div>
 
-          <div className="flex flex-col-reverse mb-4 text-[12px]">
+          <div className="flex flex-col-reverse mt-8 mb-4 text-[12px]">
             <p className=" text-black border-b border-black w-40 mr-0 ml-auto font-bold">
               {data.date}
             </p>
           </div>
 
-          <div className="flex flex-col-reverse mb-4 text-[12px]">
+          <div className="flex flex-col-reverse mb-8 text-[12px]">
             <b className="text-black ml-0 mr-auto">MEMORANDUM</b>
           </div>
 
