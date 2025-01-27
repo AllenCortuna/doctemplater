@@ -251,7 +251,7 @@ const BondDetails = () => {
                 </div>
 
                 {/* Signature */}
-                <div className="mt-16 mr-0 ml-auto w-1/3 text-center">
+                <div className="mt-10 mb-0 mr-0 ml-auto w-1/3 text-center">
                   <div className="uppercase font-bold">{data.endUser}</div>
                   <div>{data.endUserTitle}</div>
                   <div>{data.designation}</div>
