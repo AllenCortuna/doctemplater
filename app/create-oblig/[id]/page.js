@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import Draggable from "react-draggable";
 
 const BondDetails = () => {
   const searchParams = useSearchParams();
@@ -69,27 +70,33 @@ const BondDetails = () => {
         >
           {/* Header Section */}
           <div className="flex justify-between items-center mb-4">
-            <img
-              src="/dpwhLogo.png"
-              alt="DPWH Logo"
-              className="h-24 w-24 object-contain"
-            />
-            <div className="text-[14px] text-black">
-              <p>Republic of the Philippines</p>
-              <p className="font-semibold">
-                DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
-              </p>
-              <p className="text-[12px]">
-                MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE
-              </p>
-              <p className="text-[12px]">MIMAROPA REGION(IV-B)</p>
-              <p className="text-[12px]">Mamburao, Occidental Mindoro</p>
-            </div>
-            <img
-              src="/bagongPilipinas.png"
-              alt="Bagong Pilipinas"
-              className="h-24 w-24 object-contain"
-            />
+            <Draggable>
+              <img
+                src="/dpwhLogo.png"
+                alt="DPWH Logo"
+                className="h-24 w-24 object-contain"
+              />
+            </Draggable>
+            <Draggable>
+              <div className="text-[14px] text-black">
+                <p>Republic of the Philippines</p>
+                <p className="font-semibold">
+                  DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
+                </p>
+                <p className="text-[12px]">
+                  MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE
+                </p>
+                <p className="text-[12px]">MIMAROPA REGION(IV-B)</p>
+                <p className="text-[12px]">Mamburao, Occidental Mindoro</p>
+              </div>
+            </Draggable>
+            <Draggable>
+              <img
+                src="/bagongPilipinas.png"
+                alt="Bagong Pilipinas"
+                className="h-24 w-24 object-contain"
+              />
+            </Draggable>
           </div>
 
           <div className="flex flex-col-reverse mt-8 mb-4 text-[12px]">
@@ -251,11 +258,14 @@ const BondDetails = () => {
                 </div>
 
                 {/* Signature */}
-                <div className="mt-10 mb-0 mr-0 ml-auto w-1/3 text-center">
-                  <div className="uppercase font-bold">{data.endUser}</div>
-                  <div>{data.endUserTitle}</div>
-                  <div>{data.designation}</div>
-                </div>
+                <Draggable>
+                  <div className="mt-10 mb-0 mr-0 ml-auto w-1/3 text-center">
+                    <div className="uppercase font-bold">{data.endUser}</div>
+                    <div>{data.endUserTitle}</div>
+                    <div>{data.designation}</div>
+                  </div>
+                </Draggable>
+
               </div>
             </div>
           </div>
