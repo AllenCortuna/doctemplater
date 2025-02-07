@@ -66,10 +66,10 @@ const BondDetails = () => {
         <div
           id="printable"
           ref={contentRef}
-          className="w-[210mm] tahoma h-[297mm] mx-auto p-14 text-center bg-white border border-gray-200 shadow-lg"
+          className="w-[210mm] tahoma h-[297mm] mx-auto text-center bg-white border border-gray-200 shadow-lg"
         >
           {/* Header Section */}
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center p-14 pb-0 mb-[22px]">
             <Draggable>
               <img
                 src="/dpwhLogo.png"
@@ -80,10 +80,10 @@ const BondDetails = () => {
             <Draggable>
               <div className="text-[14px] text-black">
                 <p>Republic of the Philippines</p>
-                <p className="font-semibold">
+                <p className="">
                   DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
                 </p>
-                <p className="text-[12px]">
+                <p className="text-[12px] font-semibold">
                   MINDORO OCCIDENTAL DISTRICT ENGINEERING OFFICE
                 </p>
                 <p className="text-[12px]">MIMAROPA REGION(IV-B)</p>
@@ -99,173 +99,176 @@ const BondDetails = () => {
             </Draggable>
           </div>
 
-          <div className="flex flex-col-reverse mt-8 mb-4 text-[12px]">
-            <p className=" text-black border-b border-black w-40 mr-0 ml-auto font-bold">
-              {data.date}
-            </p>
-          </div>
+          <div className="p-[1in] pt-0">
+            <div className="flex flex-col-reverse mt-8 mb-[22px] text-[12px]">
+              <p className=" text-black border-b border-black w-40 mr-auto ml-0 font-bold">
+                {data.date}
+              </p>
+            </div>
 
-          <div className="flex flex-col-reverse mb-8 text-[12px]">
-            <b className="text-black ml-0 mr-auto">MEMORANDUM</b>
-          </div>
+            <div className="flex flex-col-reverse mb-8 text-[12px]">
+              <b className="text-black ml-0 mr-auto">MEMORANDUM</b>
+            </div>
 
-          <div className="p-1 max-w-4xl mx-auto text-left">
-            <div className="space-y-6">
-              <div className="text-[11px]">
-                {/* For Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4 font-bold">FOR</div>
-                  <div className="col-span-8">
-                    <div>: The Budget Officer II</div>
-                    <div className="ml-2 ">Accounting Section</div>
-                    <div className="ml-2">This District</div>
-                  </div>
-                </div>
-
-                {/* Subject Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4  font-bold">SUBJECT</div>
-                  <div className="col-span-8">
-                    <div>: Obligation Request</div>
-                    <div className="ml-2">
-                      This is to request for the issuance of an Obligation for
-                      the following:
+            <div className="p-1 max-w-4xl mx-auto text-left">
+              <div className="space-y-6">
+                <div className="text-[11px]">
+                  {/* For Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4 font-bold">FOR</div>
+                    <div className="col-span-8">
+                      <div>: The Budget Officer II</div>
+                      <div className="ml-2 ">Accounting Section</div>
+                      <div className="ml-2">This District</div>
                     </div>
                   </div>
-                </div>
 
-                {/* Fund Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4 font-bold">FUND</div>
-                  <div className="col-span-8">: {data.fund}</div>
-                </div>
-
-                {/* Amount Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4 font-bold">AMOUNT</div>
-                  <div className="col-span-8">
-                    <div className="font-bold">
-                      : <span className="ml-2 mr-10">₱</span> {data.amount}
+                  {/* Subject Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4  font-bold">SUBJECT</div>
+                    <div className="col-span-8">
+                      <div>: Obligation Request</div>
+                      <div className="ml-2">
+                        This is to request for the issuance of an Obligation for
+                        the following:
+                      </div>
                     </div>
-                    <div className="ml-4">{data.amountWords}</div>
                   </div>
-                </div>
 
-                {/* Payee Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4 font-bold">PAYEE</div>
-                  <div className="col-span-8">
-                    <div>
-                      : <b>{data.contractor}</b>
+                  {/* Fund Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4 font-bold">FUND</div>
+                    <div className="col-span-8">: {data.fund}</div>
+                  </div>
+
+                  {/* Amount Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4 font-bold">AMOUNT</div>
+                    <div className="col-span-8">
+                      <div className="font-bold">
+                        : <span className="ml-2 mr-10">₱</span> {data.amount}
+                      </div>
+                      <div className="ml-4">{data.amountWords}</div>
                     </div>
-                    <div className="ml-2">Tin no: {data.contractorTIN}</div>
                   </div>
-                </div>
 
-                {/* Payee Address Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4 font-bold">
-                    PAYEE OFFICE/ADDRESS
+                  {/* Payee Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4 font-bold">PAYEE</div>
+                    <div className="col-span-8">
+                      <div>
+                        : <b>{data.contractor}</b>
+                      </div>
+                      <div className="ml-2">Tin no: {data.contractorTIN}</div>
+                    </div>
                   </div>
-                  <div className="col-span-8">: {data.contractorAddress}</div>
-                </div>
 
-                {/* Particulars Section */}
-                <div className="grid grid-cols-12 gap-2 mb-4">
-                  <div className="col-span-4 font-bold">PARTICULARS</div>
-                  <div className="col-span-8">
-                    <div>
-                      <div className="flex gap-1">
-                        <span>:</span>
-                        <span>
-                          To obligate payment for{" "}
-                          <b>
+                  {/* Payee Address Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4 font-bold">
+                      PAYEE OFFICE/ADDRESS
+                    </div>
+                    <div className="col-span-8">: {data.contractorAddress}</div>
+                  </div>
+
+                  {/* Particulars Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-[22px]">
+                    <div className="col-span-4 font-bold">PARTICULARS</div>
+                    <div className="col-span-8">
+                      <div>
+                        <div className="flex gap-1">
+                          <span>:</span>
+                          <span>
+                            To obligate payment for{" "}
+                            <b>
+                              {data.contractID}
+                              {"-"}
+                              {data.contractName}
+                            </b>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 ml-2">
+                        <div className="grid grid-cols-2 gap-2 mr-40">
+                          <div className="">Contract ID:</div>
+                          <div className="text-right border-b border-black ">
                             {data.contractID}
-                            {"-"}
-                            {data.contractName}
-                          </b>
-                        </span>
-                      </div>
-                    </div>
+                          </div>
+                          <div>PMS ID:</div>
+                          <div className="text-right border-b border-black ">
+                            {data.pmis}
+                          </div>
+                        </div>
 
-                    <div className="mt-4 ml-2">
-                      <div className="grid grid-cols-2 gap-2 mr-40">
-                        <div className="">Contract ID:</div>
-                        <div className="text-right border-b border-black ">
-                          {data.contractID}
+                        <div className="grid grid-cols-2 gap-2 mt-4 mr-40">
+                          <div>Labor</div>
+                          <div className="text-right">{data.labor}</div>
+                          <div>Materials</div>
+                          <div className="text-right">{data.material}</div>
+                          <div>Equipment</div>
+                          <div className="text-right border-b border-black ">
+                            {data.equipment}
+                          </div>
+                          <div className="font-bold">TOTAL</div>
+                          <div className="text-right font-bold">
+                            {data.total}
+                          </div>
                         </div>
-                        <div>PMS ID:</div>
-                        <div className="text-right border-b border-black ">
-                          {data.pmis}
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 mt-4 mr-40">
-                        <div>Labor</div>
-                        <div className="text-right">{data.labor}</div>
-                        <div>Materials</div>
-                        <div className="text-right">{data.material}</div>
-                        <div>Equipment</div>
-                        <div className="text-right border-b border-black ">
-                          {data.equipment}
-                        </div>
-                        <div className="font-bold">TOTAL</div>
-                        <div className="text-right font-bold">{data.total}</div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* SARO Section */}
-                <div className="grid grid-cols-12 gap-2 mb-1">
-                  <div className="col-span-4 font-bold">
-                    SARO/SUB-ALLOTMENT NO.:
+                  {/* SARO Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-1">
+                    <div className="col-span-4 font-bold">
+                      SARO/SUB-ALLOTMENT NO.
+                    </div>
+                    <div className="col-span-8">: {data.saro}</div>
                   </div>
-                  <div className="col-span-8">{data.saro}</div>
-                </div>
 
-                {/* Source of Fund Section */}
-                <div className="grid grid-cols-12 gap-2 mb-1">
-                  <div className="col-span-4 font-bold">SOURCE OF FUND</div>
-                  <div className="col-span-8">: {data.sourceOfFund}</div>
-                </div>
-
-                {/* UACS Section */}
-                <div className="grid grid-cols-12 gap-2 mb-1">
-                  <div className="col-span-4 font-bold">UACS No.</div>
-                  <div className="col-span-8">: {data.uacs}</div>
-                </div>
-
-                {/* Fiscal Year Section */}
-                <div className="grid grid-cols-12 gap-2 mb-1">
-                  <div className="col-span-4 font-bold">
-                    FISCAL YEAR OF ALLOTMENT
+                  {/* Source of Fund Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-1">
+                    <div className="col-span-4 font-bold">SOURCE OF FUND</div>
+                    <div className="col-span-8">: {data.sourceOfFund}</div>
                   </div>
-                  <div className="col-span-8">: FY {data.year}</div>
-                </div>
 
-                {/* Certification */}
-                <div className="mt-8">
-                  <p>
-                    I certify that charges to appropriate/allotment are
-                    necessary, lawful and under my direct supervision.
-                  </p>
-                  <p>
-                    I also certify that the supporting documents are valid,
-                    proper and legal.
-                  </p>
-                  <p>Your attention to this matter would be appreciated</p>
-                </div>
-
-                {/* Signature */}
-                <Draggable>
-                  <div className="mt-10 mb-0 mr-0 ml-auto w-1/3 text-center">
-                    <div className="uppercase font-bold">{data.endUser}</div>
-                    <div>{data.endUserTitle}</div>
-                    <div>{data.designation}</div>
+                  {/* UACS Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-1">
+                    <div className="col-span-4 font-bold">UACS No.</div>
+                    <div className="col-span-8">: {data.uacs}</div>
                   </div>
-                </Draggable>
 
+                  {/* Fiscal Year Section */}
+                  <div className="grid grid-cols-12 gap-2 mb-1">
+                    <div className="col-span-4 font-bold">
+                      FISCAL YEAR OF ALLOTMENT
+                    </div>
+                    <div className="col-span-8">: FY {data.year}</div>
+                  </div>
+
+                  {/* Certification */}
+                  <div className="mt-8">
+                    <p>
+                      I certify that charges to appropriate/allotment are
+                      necessary, lawful and under my direct supervision.
+                    </p>
+                    <p>
+                      I also certify that the supporting documents are valid,
+                      proper and legal.
+                    </p>
+                    <p className="mt-[12px]">Your attention to this matter would be appreciated</p>
+                  </div>
+
+                  {/* Signature */}
+                  <Draggable>
+                    <div className="mt-10 mb-0 mr-0 ml-auto w-1/3 text-center">
+                      <div className="uppercase font-bold">{data.endUser}</div>
+                      <div>{data.endUserTitle}</div>
+                      <div>{data.designation}</div>
+                    </div>
+                  </Draggable>
+                </div>
               </div>
             </div>
           </div>
